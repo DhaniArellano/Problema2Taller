@@ -70,6 +70,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
         if (e.getSource() == vista.btnNuevoE) {
             limpiar();
             vista.tfNombresE.requestFocus();
+            actualizarElementos();
         }
         if (e.getSource() == vista.btnGuardarE) {
             modelo.setNombre(vista.tfNombresE.getText());
@@ -97,7 +98,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
             }
-
+            actualizarElementos();
         }
         if (e.getSource() == vista.btnActualizarE) {
             modelo.setNombre(vista.tfNombresE.getText());
@@ -128,12 +129,15 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
             } catch (Exception er) {
                 System.err.println(er);
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
+            }finally{
+                actualizarElementos();
             }
         }
         if (e.getSource() == vista.btnListarE) {
-            limpiarTabla();
-            listar(vista.tbEmpleados);
+            //limpiarTabla();
+            //listar(vista.tbEmpleados);
             limpiar();
+            actualizarElementos();
         }
         if (e.getSource() == vista.btnEliminarE) {
             try {
@@ -148,6 +152,8 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
                 }
             } catch (Exception err) {
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
+            }finally{
+                actualizarElementos();
             }
         }
     }
@@ -209,7 +215,12 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
         }
         //tbClientes.setRowHeight(35);
         //tbClientes.setRowMargin(10);
-
+    }
+    public void actualizarElementos() {
+        //limpiar();
+        limpiarTabla();
+        listar(vista.tbEmpleados);
+        //rellenarCombo(vista.cbVehiculoC);
     }
 
     void centrarCeldas(JTable tbEmpleados) {

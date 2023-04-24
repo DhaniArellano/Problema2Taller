@@ -70,6 +70,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
         //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         if (e.getSource() == vista.btnNuevoV) {
             limpiar();
+            actualizarElementos();
             vista.tfPlaca.requestFocus();
         }
         if (e.getSource() == vista.btnGuardarV) {
@@ -94,7 +95,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
                 JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
                 vista.tfPlaca.requestFocus();
             }
-            
+            actualizarElementos();
         }
         if (e.getSource() == vista.btnActualizarV) {
             modelo.setPlaca(vista.tfPlaca.getText());
@@ -120,11 +121,14 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
             }catch(Exception er){
                 System.err.println(er);
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
+            }finally{
+                actualizarElementos();
             }
         }
         if (e.getSource() == vista.btnListarV) {
-            limpiarTabla();
-            listar(vista.tbVehiculos);
+            //limpiarTabla();
+            //listar(vista.tbVehiculos);
+            actualizarElementos();
             limpiar();
         }
         if (e.getSource() == vista.btnEliminarV) {
@@ -140,10 +144,10 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
             }
             }catch(Exception err){
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
+            }finally{
+                actualizarElementos();
             }
         }
-        
-        
     }
     public void mouseClicked(MouseEvent e) {
         // Manejar eventos de clic en la tabla
@@ -205,7 +209,13 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
         }
         //tbClientes.setRowHeight(35);
         //tbClientes.setRowMargin(10);
-
+    }
+    public void actualizarElementos() {
+        //limpiar();
+        limpiarTabla();
+        //limpiarCombo(vista.cbVehiculoC);
+        listar(vista.tbVehiculos);
+        //rellenarCombo(vista.cbVehiculoC);
     }
 
     void centrarCeldas(JTable tbClientes) {

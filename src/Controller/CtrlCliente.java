@@ -204,7 +204,6 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
         limpiarCombo(vista.cbVehiculoC);
         listar(vista.tbClientes);
         rellenarCombo(vista.cbVehiculoC);
-        
     }
     public void limpiar(){
         vista.tfNombresC.setText(null);
