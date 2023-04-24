@@ -26,7 +26,7 @@ La aplicación utiliza las siguientes tecnologías:
 Para utilizar la aplicación, sigue estos pasos:
 
 1. Clona o descarga el repositorio de la aplicación en tu máquina local.
-2. Crea una base de datos MySQL en tu servidor local o remoto.
+2. Crea una base de datos MySQL mediante el script proporcionado.
 3. Importa el archivo de script SQL proporcionado en la carpeta `db` del repositorio en la base de datos MySQL para crear las tablas necesarias.
-4. Actualiza la configuración de conexión a la base de datos en el archivo `src/main/resources/config.properties` con los datos de tu servidor de base de datos (nombre de host, puerto, nombre de la base de datos, usuario y contraseña).
+4. Cambia la configuracion de la base de datos en la clase conexion con los datos de tu base de datos
 5. Compila y ejecuta la aplicación en tu entorno de desarrollo Java.
