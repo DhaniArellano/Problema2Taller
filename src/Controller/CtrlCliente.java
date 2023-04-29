@@ -21,6 +21,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
@@ -80,6 +81,8 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             actualizarElementos();
         }
         if (e.getSource() == vista.btnGuardarC) {
+            String placa;
+            int id;
             modelo.setNombre(vista.tfNombresC.getText());
             modelo.setApellido(vista.tfApellidosC.getText());
             modelo.setDireccion(vista.tfDireccionC.getText());
@@ -87,7 +90,15 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             modelo.setTelefono(vista.tfTelefonoC.getText());
             modelo.setEmail(vista.tfEmailC.getText());
             //System.out.println(vista.cbVehiculoC.getSelectedIndex());
-            modelo.setId_vehiculo(vista.cbVehiculoC.getSelectedIndex());
+            placa = vista.cbVehiculoC.getSelectedItem().toString();
+            if (placa != null) {
+                id = clienteDTO.verificarAuto(placa);
+                modelo.setId_vehiculo(id);
+            } else {
+                JOptionPane.showMessageDialog(null, "Placa no encontrada");
+            }
+            //ncont
+            //modelo.setId_vehiculo(vista.cbVehiculoC.getSelectedIndex());
             modelo.setUsuario(vista.tfUsuarioC.getText());
             modelo.setContrasena(vista.tfContraC.getText());
             //comboBox.getSelectedIndex()
@@ -107,13 +118,23 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             actualizarElementos();
         }
         if (e.getSource() == vista.btnActualizarC) {
+            String placa;
+            int id;
             modelo.setNombre(vista.tfNombresC.getText());
             modelo.setApellido(vista.tfApellidosC.getText());
             modelo.setDireccion(vista.tfDireccionC.getText());
             modelo.setCedula(vista.tfCedulaC.getText());
             modelo.setTelefono(vista.tfTelefonoC.getText());
             modelo.setEmail(vista.tfEmailC.getText());
-            modelo.setId_vehiculo((vista.cbVehiculoC.getSelectedIndex()));
+            
+            placa = vista.cbVehiculoC.getSelectedItem().toString();
+            if(placa != null){
+                id = clienteDTO.verificarAuto(placa);
+                modelo.setId_vehiculo(id);
+            }else{
+                JOptionPane.showMessageDialog(null, "Placa no encontrada");
+            }
+            //modelo.setId_vehiculo(vista.cbVehiculoC.getSelectedIndex());
             modelo.setUsuario(vista.tfUsuarioC.getText());
             modelo.setContrasena(vista.tfContraC.getText());
             try{
@@ -168,6 +189,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             int filaSeleccionada = vista.tbClientes.getSelectedRow();
             // Obtener valor del campo ID de la fila seleccionada
             String id = vista.tbClientes.getValueAt(filaSeleccionada, 0).toString();
+            int indice;
             // Realizar acciones con el valor del ID obtenido
             //System.out.println(id);
             //int id = Integer.parseInt((String) vista.tbClientes.getValueAt(fila, 0).toString());
@@ -189,7 +211,11 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
                 vista.tfTelefonoC.setText(cl.getTelefono());
                 vista.tfEmailC.setText(cl.getEmail());
                 System.out.println(cl.getId_vehiculo());
-                vista.cbVehiculoC.setSelectedIndex(cl.getId_vehiculo());
+                var veh = clienteDTO.consultaVehiculo(cl.getId_vehiculo());
+                indice = obtenerIndice(veh.getPlaca());
+                vista.cbVehiculoC.setSelectedIndex(indice+1);
+                //vista.cbVehiculoC.setSelectedIndex(cl.getId_vehiculo());
+                //vista.cbVehiculoC.setSelectedItem("fds");
                 vista.tfUsuarioC.setText(cl.getUsuario());
                 vista.tfContraC.setText(cl.getContrasena());
             } else {
@@ -234,6 +260,11 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
         //tbClientes.setRowHeight(35);
         //tbClientes.setRowMargin(10);
     }
+    public int verificarAuto(String placa){
+        int veh=0;
+        veh = clienteDTO.verificarAuto(placa);
+        return veh;
+    }
     public void limpiarCombo(JComboBox cbVehiculoC){
         cbVehiculoC.removeAllItems();
     }
@@ -247,6 +278,17 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
         }
         //cbVehiculoC.setSelectedIndex(-1);
         //cbVehiculoC.setModel(modelC);
+    }
+    public int obtenerIndice(String placaBuscada){
+            Set<String> datos = clienteDTO.obtenerPlacas();
+            int indice=0;
+            if (datos.contains(placaBuscada)) {
+                indice = new ArrayList<>(datos).indexOf(placaBuscada);
+                System.out.println("placa encontrada");
+            }else{
+                System.out.println("no se encontro placa");
+            }
+            return indice;
     }
 
     void centrarCeldas(JTable tbClientes) {

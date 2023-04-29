@@ -53,7 +53,7 @@ public class ClienteDTO extends Conexion {
     public boolean modificarCliente(Cliente cl) {
         PreparedStatement ps = null;
         Connection con = getConexion();
-
+        
         String sql = "UPDATE persona SET nombre=?, apellido=?, cedula=?, telefono=?, email=?, usuario=?, contraseña=?, direccion=?, Vehiculo_idVehiculo=? WHERE idPersona=? ";
 
         try {
@@ -196,4 +196,65 @@ public class ClienteDTO extends Conexion {
         }
         return datos;
     }
+    public int verificarAuto(String placa){
+        int id;
+        id=0;
+        Vehiculo veh = new Vehiculo();
+        //Cliente cli = null;
+        ResultSet rs;
+        PreparedStatement ps = null;
+        //List<Cliente> datos = new ArrayList<>();
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT * FROM vehiculo WHERE placa=?");
+            ps.setString(1, placa);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                // Obtener los datos del resultado y crear un objeto Cliente
+                veh.setId(rs.getInt(1));
+                veh.setPlaca(rs.getString(2));
+                veh.setTipo(rs.getString(3));
+                veh.setEstado(rs.getString(4));
+                veh.setMotivoIngreso(rs.getString(5));
+                veh.setFechaIngreso(rs.getDate(6));
+                veh.setFechaEntrega(rs.getDate(7));
+                id = veh.getId();
+            } else {
+                System.out.println("no hay resultados");
+                id = 0;
+            }
+        } catch (Exception e) {
+        }
+        
+        return id;
+    }
+    public Vehiculo consultaVehiculo(int idC) {
+        Vehiculo vh = new Vehiculo();
+        //Cliente cli = null;
+        ResultSet rs;
+        PreparedStatement ps = null;
+        //List<Cliente> datos = new ArrayList<>();
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT * FROM vehiculo WHERE idVehiculo=?");
+            ps.setInt(1, idC);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                // Obtener los datos del resultado y crear un objeto Cliente
+                vh.setId(rs.getInt(1));
+                vh.setPlaca(rs.getString(2));
+                vh.setTipo(rs.getString(3));
+                vh.setEstado(rs.getString(4));
+                vh.setMotivoIngreso(rs.getString(5));
+                vh.setFechaIngreso(rs.getDate(6));
+                vh.setFechaEntrega(rs.getDate(7));
+            } else {
+                System.out.println("no hay resultados");
+            }
+        } catch (Exception e) {
+        }
+        //return datos;
+        return vh;
+    }
+
 }

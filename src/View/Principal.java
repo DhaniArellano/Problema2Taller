@@ -82,6 +82,7 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnReportes.setText("Reportes");
+        btnReportes.setEnabled(false);
         btnReportes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReportesActionPerformed(evt);
