@@ -28,7 +28,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-
+import Utils.Validador;
 /**
  *
  * @author DHANI
@@ -39,6 +39,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
     private final GestionClientes vista;
     private DefaultTableModel model = new DefaultTableModel();
     private DefaultComboBoxModel<String> modelC = new DefaultComboBoxModel<>();
+    private final Validador validador;
 
     public CtrlCliente(Cliente modelo, ClienteDTO clienteDTO, GestionClientes vista) {
         this.modelo = modelo;
@@ -53,6 +54,8 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
         this.vista.tbClientes.addMouseListener(this);
         this.vista.addWindowListener(this);
         this.vista.cbVehiculoC.addActionListener(this);
+        this.validador = new Validador();
+        
     }
     public void iniciar() {
         vista.setTitle("Gestion Clientes");
@@ -88,7 +91,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             modelo.setDireccion(vista.tfDireccionC.getText());
             modelo.setCedula(vista.tfCedulaC.getText());
             modelo.setTelefono(vista.tfTelefonoC.getText());
-            modelo.setEmail(vista.tfEmailC.getText());
+            //vista.tfEmailC.getText()
             //System.out.println(vista.cbVehiculoC.getSelectedIndex());
             placa = vista.cbVehiculoC.getSelectedItem().toString();
             if (placa != null) {
@@ -99,12 +102,24 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             }
             //ncont
             //modelo.setId_vehiculo(vista.cbVehiculoC.getSelectedIndex());
-            modelo.setUsuario(vista.tfUsuarioC.getText());
-            modelo.setContrasena(vista.tfContraC.getText());
             //comboBox.getSelectedIndex()
             //modelo.setPrecio(Double.parseDouble(vista.txtPrecio.getText()));
             //modelo.setCantidad(Integer.parseInt(vista.txtCantidad.getText()));
-            if(!modelo.getCedula().equals("")){
+            if(!modelo.getCedula().isEmpty()){
+                if(!vista.tfUsuarioC.getText().isEmpty() && vista.tfContraC.getText().isEmpty()){
+                    modelo.setUsuario(vista.tfUsuarioC.getText());
+                    modelo.setContrasena(vista.tfContraC.getText());
+                }else{
+                    JOptionPane.showMessageDialog(null, "El campo Usuario y Contraseña son obligatorios");
+                    vista.tfUsuarioC.requestFocus();
+                }
+                
+                if (validador.validarEmail(vista.tfEmailC.getText())) {
+                    modelo.setEmail(vista.tfEmailC.getText());
+                } else {
+                    JOptionPane.showMessageDialog(null, "El Email no tiene el formato requerido");
+                    vista.tfEmailC.requestFocus();
+                }
                 if (clienteDTO.registrarCliente(modelo)) {
                     JOptionPane.showMessageDialog(null, "Registro Guardado");
                     limpiar();
@@ -113,7 +128,8 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
                     //limpiar();
                 }
             }else{
-                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos, especialmente la cédula");
+                vista.tfCedulaC.requestFocus();
             }
             actualizarElementos();
         }
