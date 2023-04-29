@@ -65,6 +65,7 @@ public class EmpleadoDTO extends Conexion {
             ps.setString(7, em.getContrasena());
             ps.setString(8, em.getRol());
             ps.setString(9, em.getCargo());
+            ps.setInt(10, em.getId());
             ps.execute();
             return true;
         } catch (SQLException e) {

@@ -55,7 +55,7 @@ public class CtrlLogin implements ActionListener {
             usuario = vista.tfUsername.getText();
             contraseña = vista.tfPassword.getText();
             if(personaDTO.validarLogin(usuario, contraseña)){
-                JOptionPane.showMessageDialog(null, "Correcto");
+                //JOptionPane.showMessageDialog(null, "Correcto");
                 cerrar();
                 Principal principal = new Principal();
                 principal.setVisible(true);
