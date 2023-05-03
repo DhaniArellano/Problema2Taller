@@ -91,22 +91,15 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             modelo.setDireccion(vista.tfDireccionC.getText());
             modelo.setCedula(vista.tfCedulaC.getText());
             modelo.setTelefono(vista.tfTelefonoC.getText());
-            //vista.tfEmailC.getText()
-            //System.out.println(vista.cbVehiculoC.getSelectedIndex());
             placa = vista.cbVehiculoC.getSelectedItem().toString();
             if (placa != null) {
                 id = clienteDTO.verificarAuto(placa);
                 modelo.setId_vehiculo(id);
             } else {
-                JOptionPane.showMessageDialog(null, "Placa no encontrada");
+                JOptionPane.showMessageDialog(null, "Placa no seleccionada");
             }
-            //ncont
-            //modelo.setId_vehiculo(vista.cbVehiculoC.getSelectedIndex());
-            //comboBox.getSelectedIndex()
-            //modelo.setPrecio(Double.parseDouble(vista.txtPrecio.getText()));
-            //modelo.setCantidad(Integer.parseInt(vista.txtCantidad.getText()));
             if(!modelo.getCedula().isEmpty()){
-                if(!vista.tfUsuarioC.getText().isEmpty() && vista.tfContraC.getText().isEmpty()){
+                if(!vista.tfUsuarioC.getText().isEmpty() && !vista.tfContraC.getText().isEmpty()){
                     modelo.setUsuario(vista.tfUsuarioC.getText());
                     modelo.setContrasena(vista.tfContraC.getText());
                 }else{
@@ -114,7 +107,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
                     vista.tfUsuarioC.requestFocus();
                 }
                 
-                if (validador.validarEmail(vista.tfEmailC.getText())) {
+                if (Validador.validarEmail(vista.tfEmailC.getText())) {
                     modelo.setEmail(vista.tfEmailC.getText());
                 } else {
                     JOptionPane.showMessageDialog(null, "El Email no tiene el formato requerido");
@@ -321,6 +314,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             i = i - 1;
         }
     }
+
 
     @Override
     public void windowClosing(WindowEvent e) {
