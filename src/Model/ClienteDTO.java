@@ -23,10 +23,9 @@ public class ClienteDTO extends Conexion {
     public boolean registrarCliente(Cliente cl) {
         PreparedStatement ps = null;
         Connection con = getConexion();
-
         String sqlCliente = "INSERT INTO persona (nombre, apellido, cedula, telefono, email, usuario, contraseña, direccion, Vehiculo_idVehiculo) VALUES(?,?,?,?,?,?,?,?,?)";
-
         try {
+            con.setAutoCommit(false); // Iniciar una transacción
             ps = con.prepareStatement(sqlCliente);
             ps.setString(1, cl.getNombre());
             ps.setString(2, cl.getApellido());
@@ -37,19 +36,27 @@ public class ClienteDTO extends Conexion {
             ps.setString(7, cl.getContrasena());
             ps.setString(8, cl.getDireccion());
             ps.setInt(9, cl.getId_vehiculo());
-            ps.execute();
+            ps.executeUpdate(); // Usar executeUpdate() en lugar de execute()
+            con.commit(); // Confirmar la transacción
             return true;
         } catch (SQLException e) {
             System.err.println(e);
+            try {
+                con.rollback(); // Revertir la transacción en caso de excepción
+            } catch (SQLException e1) {
+                System.err.println(e1);
+            }
             return false;
         } finally {
             try {
+                con.setAutoCommit(true); // Restablecer la configuración de AutoCommit
                 con.close();
             } catch (SQLException e) {
                 System.err.println(e);
             }
         }
     }
+
     public boolean modificarCliente(Cliente cl) {
         PreparedStatement ps = null;
         Connection con = getConexion();
