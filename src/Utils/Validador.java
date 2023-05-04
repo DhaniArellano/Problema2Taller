@@ -19,5 +19,12 @@ public class Validador {
         Matcher matcher = EMAIL_PATTERN.matcher(email);
         return matcher.matches();
     }
+    public boolean validarTelefono(String telefono) {
+        if (telefono != null && telefono.matches("\\d{10}")) {
+            return true; // el teléfono tiene 10 dígitos
+        } else {
+            return false; // el teléfono no tiene 10 dígitos
+        }
+    }
     
 }
