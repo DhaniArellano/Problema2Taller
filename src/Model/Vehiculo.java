@@ -21,8 +21,6 @@ public class Vehiculo {
     private String motivoIngreso;
     private Date fechaIngreso;
     private Date fechaEntrega;
-    private ArrayList<Servicio> servicios;
-    private ArrayList<Turno> turnos;
 
     public Vehiculo() {
     }
@@ -36,38 +34,6 @@ public class Vehiculo {
         this.motivoIngreso = motivoIngreso;
         this.fechaIngreso = fechaIngreso;
         this.fechaEntrega = fechaEntrega;
-        servicios = new ArrayList<>();
-        turnos = new ArrayList<>();
-    }
-    public List<Turno> getTurnos() {
-        return turnos;
-    }
-    
-    public void setTurnos(List<Turno> turnos) {
-        this.turnos = (ArrayList<Turno>) turnos;
-    }
-    
-    public void addTurno(Turno turno) {
-        this.turnos.add(turno);
-    }
-    
-    public void removeTurno(Turno turno) {
-        this.turnos.remove(turno);
-    }
-    public void agregarServicio(Servicio servicio) {
-        servicios.add(servicio);
-    }
-    
-    public void eliminarServicio(Servicio servicio) {
-        servicios.remove(servicio);
-    }
-    
-    public ArrayList<Servicio> getServicios() {
-        return servicios;
-    }
-    
-    public void setServicios(ArrayList<Servicio> servicios) {
-        this.servicios = servicios;
     }
 
     /**
