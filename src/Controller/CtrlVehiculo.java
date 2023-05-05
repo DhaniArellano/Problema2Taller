@@ -4,8 +4,11 @@
  */
 package Controller;
 
+import Model.Servicio;
+import Model.ServicioDTO;
 import Model.VehiculoDTO;
 import Model.Vehiculo;
+import View.GestionServicios;
 import View.GestionVehiculos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,6 +49,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
         this.vista.btnEliminarV.addActionListener(this);
         this.vista.btnListarV.addActionListener(this);
         this.vista.btnSalirV.addActionListener(this);
+        this.vista.btnServicio.addActionListener(this);
         this.vista.tbVehiculos.addMouseListener(this);
         this.vista.addWindowListener(this);
     }
@@ -68,6 +72,18 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
     @Override
     public void actionPerformed(ActionEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (e.getSource() == vista.btnServicio) {
+            Servicio modServicio = new Servicio();
+            ServicioDTO modS = new ServicioDTO();
+            GestionServicios gestionServicios = new GestionServicios();
+            CtrlServicio ctrlS = new CtrlServicio(modServicio, modS, gestionServicios);
+            int id = Integer.parseInt(vista.tfIdV.getText());
+            String placa = vista.tfPlaca.getText();
+            ctrlS.iniciar(id, placa);
+            //this.dispose();
+            gestionServicios.setVisible(true);
+            System.out.println("gestionServicios");
+        }
         if (e.getSource() == vista.btnNuevoV) {
             limpiar();
             actualizarElementos();
