@@ -9,19 +9,37 @@ package Model;
  * @author DHANI
  */
 public class Servicio {
+    private int id;
     private String tipoServicio;
     private String descripcion;
-    private int tiempoEstimado; // En minutos
+    private double tiempoEstimado; // En minutos
     private double precio;
 
-    public Servicio(String tipoServicio, String descripcion, int tiempoEstimado, double precio) {
+    public Servicio() {
+    }
+
+    public Servicio(int id, String tipoServicio, String descripcion, double tiempoEstimado, double precio) {
+        this.id = id;
         this.tipoServicio = tipoServicio;
         this.descripcion = descripcion;
         this.tiempoEstimado = tiempoEstimado;
         this.precio = precio;
     }
-    
-    
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
      * @return the tipoServicio
      */
@@ -53,14 +71,14 @@ public class Servicio {
     /**
      * @return the tiempoEstimado
      */
-    public int getTiempoEstimado() {
+    public double getTiempoEstimado() {
         return tiempoEstimado;
     }
 
     /**
      * @param tiempoEstimado the tiempoEstimado to set
      */
-    public void setTiempoEstimado(int tiempoEstimado) {
+    public void setTiempoEstimado(double tiempoEstimado) {
         this.tiempoEstimado = tiempoEstimado;
     }
 
@@ -78,4 +96,8 @@ public class Servicio {
         this.precio = precio;
     }
     
+    
+    
+
+
 }
