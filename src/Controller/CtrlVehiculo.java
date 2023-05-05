@@ -223,8 +223,8 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
             objeto[4] = lista.get(i).getFechaEntrega();
             model.addRow(objeto);
         }
-        //tbClientes.setRowHeight(35);
-        //tbClientes.setRowMargin(10);
+        tbVehiculos.setRowHeight(35);
+        tbVehiculos.setRowMargin(10);
     }
     public void actualizarElementos() {
         //limpiar();
