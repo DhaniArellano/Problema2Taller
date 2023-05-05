@@ -223,6 +223,7 @@ public class Principal extends javax.swing.JFrame {
 
         CtrlEmpleado ctrlE = new CtrlEmpleado(modEmpleado, modE, gestionEmpleados);
         ctrlE.iniciar();
+        this.dispose();
         gestionEmpleados.setVisible(true);
     }//GEN-LAST:event_btnGestionEmpleadosActionPerformed
 

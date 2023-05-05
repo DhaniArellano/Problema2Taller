@@ -53,6 +53,7 @@ public class GestionVehiculos extends javax.swing.JFrame {
         tfMotivo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         tfIdV = new javax.swing.JTextField();
+        btnServicio = new javax.swing.JButton();
         btnNuevoV = new javax.swing.JButton();
         btnGuardarV = new javax.swing.JButton();
         btnActualizarV = new javax.swing.JButton();
@@ -97,6 +98,8 @@ public class GestionVehiculos extends javax.swing.JFrame {
 
         tfIdV.setEnabled(false);
 
+        btnServicio.setText("Servicios");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -129,16 +132,17 @@ public class GestionVehiculos extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(cbServicio, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(tfIdV, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
                             .addComponent(tfTurno, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAsignarTurno)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnAsignarTurno))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(cbServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnServicio)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,7 +160,8 @@ public class GestionVehiculos extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblServicio))
+                            .addComponent(lblServicio)
+                            .addComponent(btnServicio))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAsignarTurno)
@@ -286,6 +291,7 @@ public class GestionVehiculos extends javax.swing.JFrame {
     public javax.swing.JButton btnListarV;
     public javax.swing.JButton btnNuevoV;
     public javax.swing.JButton btnSalirV;
+    public javax.swing.JButton btnServicio;
     public javax.swing.JComboBox<String> cbServicio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

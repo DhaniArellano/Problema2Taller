@@ -286,8 +286,8 @@ public class GestionEmpleados extends javax.swing.JFrame {
     private void btnSalirEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirEActionPerformed
         // TODO add your handling code here:
         Principal principal = new Principal();
-        principal.setVisible(true);
         this.dispose();
+        principal.setVisible(true);
         principal.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnSalirEActionPerformed
 
