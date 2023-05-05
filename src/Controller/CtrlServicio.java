@@ -27,6 +27,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+import java.text.NumberFormat;
+import javax.swing.JFormattedTextField;
+import javax.swing.text.NumberFormatter;
+
 /**
  *
  * @author DHANI
@@ -72,6 +76,7 @@ public class CtrlServicio extends MouseAdapter implements ActionListener, Window
         vista.tfTiempo.setText(null);
         vista.tfPrecio.setText(null);
         vista.jtDescripcion.setText(null);
+        vista.tfIdServicio.setText(null);
         //vista.tfIdVehiculo.setText(null);
         //vista.tfPlaca.setText(null);
     }
@@ -85,6 +90,7 @@ public class CtrlServicio extends MouseAdapter implements ActionListener, Window
         model = (DefaultTableModel) tbServicios.getModel();
         tbServicios.setModel(model);
         List<Servicio> lista = servicioDTO.listarServicios(Integer.parseInt(vista.tfIdVehiculo.getText()));
+        System.out.println("listar id: "+vista.tfIdVehiculo.getText());
         Object[] objeto = new Object[5];
         for (int i = 0; i < lista.size(); i++) {
             objeto[0] = lista.get(i).getId();
@@ -114,15 +120,67 @@ public class CtrlServicio extends MouseAdapter implements ActionListener, Window
         limpiarTabla();
         listar(vista.tbServicios);
     }
+    private boolean validarCampos() {
+        //return !(vista.tfIdVehiculo.getText().isEmpty() || vista.tfPlaca.getText().isEmpty() || vista.ftfPrecio.getText().isEmpty() || vista.ftfTiempo.getText().isEmpty() || vista.tfTipo.getText().isEmpty());
+        return true;
+    }
     
     @Override
     public void actionPerformed(ActionEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        
         if (e.getSource() == vista.btnLimpiar) {
             limpiar();
             vista.tfTipo.requestFocus();
             //actualizarElementos();
+        }
+        if (e.getSource() == vista.btnAgregar) {
+            if (validarCampos()) {
+                modelo.setTipoServicio(vista.tfTipo.getText());
+                try{
+                    modelo.setTiempoEstimado(Float.parseFloat(vista.tfTiempo.getText()));
+                    modelo.setPrecio(Float.parseFloat(vista.tfPrecio.getText()));
+                    modelo.setId_vehiculo(Integer.parseInt(vista.tfIdVehiculo.getText()));
+                }catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null, "Error en el valor");
+                }
+                modelo.setDescripcion(vista.jtDescripcion.getText());
+                if (servicioDTO.registrarServicio(modelo)) {
+                    JOptionPane.showMessageDialog(null, "Registro Guardado");
+                    limpiar();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al Guardar");
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
+                if (vista.tfTipo.getText().isEmpty()) {
+                    vista.tfTipo.requestFocus();
+                } else if (vista.tfTiempo.getText().isEmpty()) {
+                    vista.tfTiempo.requestFocus();
+                } else if (vista.tfPrecio.getText().isEmpty()) {
+                    vista.tfPrecio.requestFocus();
+                }else if (vista.jtDescripcion.getText().isEmpty()) {
+                    vista.jtDescripcion.requestFocus();
+                }
+            }
+            actualizarElementos();
+        }
+        if (e.getSource() == vista.btnEliminar) {
+            try {
+                modelo.setId(Integer.parseInt(vista.tfIdServicio.getText()));
+                modelo.setId_vehiculo(Integer.parseInt(vista.tfIdVehiculo.getText()));
+
+                if (servicioDTO.eliminarServicio(modelo)) {
+                    JOptionPane.showMessageDialog(null, "Registro Eliminado");
+                    limpiar();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al Eliminar");
+                    limpiar();
+                }
+            } catch (Exception err) {
+                JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
+            } finally {
+                actualizarElementos();
+            }
         }
         if (e.getSource() == vista.btnListar) {
             actualizarElementos();

@@ -12,18 +12,20 @@ public class Servicio {
     private int id;
     private String tipoServicio;
     private String descripcion;
-    private double tiempoEstimado; // En minutos
-    private double precio;
+    private float tiempoEstimado; // En minutos
+    private float precio;
+    private int id_vehiculo; 
 
     public Servicio() {
     }
 
-    public Servicio(int id, String tipoServicio, String descripcion, double tiempoEstimado, double precio) {
+    public Servicio(int id, String tipoServicio, String descripcion, float tiempoEstimado, float precio, int id_vehiculo) {
         this.id = id;
         this.tipoServicio = tipoServicio;
         this.descripcion = descripcion;
         this.tiempoEstimado = tiempoEstimado;
         this.precio = precio;
+        this.id_vehiculo = id_vehiculo;
     }
 
     /**
@@ -71,33 +73,43 @@ public class Servicio {
     /**
      * @return the tiempoEstimado
      */
-    public double getTiempoEstimado() {
+    public float getTiempoEstimado() {
         return tiempoEstimado;
     }
 
     /**
      * @param tiempoEstimado the tiempoEstimado to set
      */
-    public void setTiempoEstimado(double tiempoEstimado) {
+    public void setTiempoEstimado(float tiempoEstimado) {
         this.tiempoEstimado = tiempoEstimado;
     }
 
     /**
      * @return the precio
      */
-    public double getPrecio() {
+    public float getPrecio() {
         return precio;
     }
 
     /**
      * @param precio the precio to set
      */
-    public void setPrecio(double precio) {
+    public void setPrecio(float precio) {
         this.precio = precio;
     }
-    
-    
-    
 
+    /**
+     * @return the id_vehiculo
+     */
+    public int getId_vehiculo() {
+        return id_vehiculo;
+    }
+
+    /**
+     * @param id_vehiculo the id_vehiculo to set
+     */
+    public void setId_vehiculo(int id_vehiculo) {
+        this.id_vehiculo = id_vehiculo;
+    }
 
 }
