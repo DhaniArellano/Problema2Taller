@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 
 /**
@@ -91,15 +92,19 @@ public class ClienteDTO extends Conexion {
     public boolean eliminar(Cliente cl) {
         PreparedStatement ps = null;
         Connection con = getConexion();
-
+        //Query que borra solo persona
         String sql = "DELETE FROM persona WHERE idPersona=? ";
+        
 
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, cl.getId());
+            //ps.setInt(2, cl.getId());
             ps.execute();
             return true;
-        } catch (SQLException e) {
+        }catch (SQLIntegrityConstraintViolationException e) {
+            return false;
+        }catch (SQLException e) {
             System.err.println(e);
             return false;
         } finally {
@@ -262,6 +267,106 @@ public class ClienteDTO extends Conexion {
         }
         //return datos;
         return vh;
+    }
+    public boolean verificarVehiculoAsociado(int idVehiculo){
+        //Cliente cli = null;
+        boolean resultado;
+        resultado = false;
+        ResultSet rs;
+        PreparedStatement ps = null;
+        //List<Cliente> datos = new ArrayList<>();
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT COUNT(*) FROM persona WHERE Vehiculo_idVehiculo=?");
+            ps.setInt(1, idVehiculo);
+            rs = ps.executeQuery();
+            rs.next();
+            int registros = rs.getInt(1);
+            if (registros > 0) {
+                resultado = true;
+                System.out.println("Vehiculo ya asociado");
+            }else{
+                System.out.println("Vehiculo no asociado");
+            }
+        } catch (Exception e) {
+        }finally{
+            //con.close();
+        }
+        //return datos;
+        return resultado;
+    }
+    public boolean validarActualizacionALT(int idVehiculo, int idCliente){
+        boolean resultado = false;
+        ResultSet rs;
+        PreparedStatement ps = null;
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT COUNT(*) FROM persona WHERE Vehiculo_idVehiculo = ? AND idPersona != ? AND (idPersona, Vehiculo_idVehiculo) NOT IN ((?, ?));");
+            ps.setInt(1, idVehiculo);
+            ps.setInt(2, idCliente);
+            ps.setInt(3, idCliente);
+            ps.setInt(4, idVehiculo);
+
+            // Ejecutar la consulta y obtener el resultado
+            rs = ps.executeQuery();
+
+            // Leer el resultado
+            rs.next();
+            int numClientes = rs.getInt(1);
+
+            // Verificar si el nuevo vehículo está asociado a otro cliente
+            if (numClientes == 0) {
+                System.out.println("Se puede actualizar el valor de idVehiculo.");
+                resultado = true;
+            } else {
+                System.out.println("El nuevo valor de idVehiculo ya está asociado a otro cliente.");
+            }
+
+            // Cerrar la conexión y liberar los recursos
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultado;
+    }
+    public boolean validarActualizacion(int idCliente, int idVehiculo){
+        boolean resultado = false;
+        ResultSet rs;
+        PreparedStatement ps = null;
+        try {
+            Connection con = getConexion();
+            //query con error
+            //ps = con.prepareStatement("SELECT COUNT(*) FROM persona WHERE Vehiculo_idVehiculo = ? AND idPersona != ?");
+            ps = con.prepareStatement("SELECT COUNT(*) as count FROM Persona WHERE Vehiculo_idVehiculo = ? AND idPersona != ?");
+            ps.setInt(1, idVehiculo);
+            ps.setInt(2, idCliente);
+
+            // Ejecutar la consulta y obtener el resultado
+            rs = ps.executeQuery();
+
+            // Leer el resultado
+            rs.next();
+            int numClientes = rs.getInt(1);
+
+            // Verificar si el nuevo vehículo está asociado a otro cliente
+            if (numClientes == 0) {
+                //System.out.println("Se puede actualizar el valor de idVehiculo.");
+                resultado = true;
+            } else {
+                //System.out.println("El nuevo valor de idVehiculo ya está asociado a otro cliente. ");
+            }
+            //System.out.println("idVehiculo: "+idVehiculo+" idCliente:"+idCliente);
+
+            // Cerrar la conexión y liberar los recursos
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultado;
     }
 
 }

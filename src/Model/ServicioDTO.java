@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.JOptionPane;
 /**
  *
@@ -126,6 +128,23 @@ public class ServicioDTO extends Conexion {
         }
         //return datos;
         return ser; 
+    }
+    public Set<String> obtenerServicios(int id) {
+        ResultSet rs;
+        PreparedStatement ps = null;
+        Set<String> datos = new LinkedHashSet<>();
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT * FROM servicios WHERE Vehiculo_idVehiculo = ?");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String placa = rs.getString(2);
+                datos.add(placa);
+            }
+        } catch (Exception e) {
+        }
+        return datos;
     }
     public List<Servicio> listarServiciosTest(int id) {
         System.out.println(id);
