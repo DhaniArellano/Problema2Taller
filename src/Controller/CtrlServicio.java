@@ -61,7 +61,7 @@ public class CtrlServicio extends MouseAdapter implements ActionListener, Window
     public void iniciar(int id, String placa) {
         vista.setTitle("Servicios");
         vista.setLocationRelativeTo(null);
-        //vista.txtId.setVisible(false);
+        vista.tfIdServicio.setVisible(false);
         if(!placa.isEmpty()){
             cargarInformacion(id, placa);
         }
