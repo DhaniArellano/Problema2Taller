@@ -21,15 +21,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 
-import java.text.NumberFormat;
-import javax.swing.JFormattedTextField;
-import javax.swing.text.NumberFormatter;
 
 /**
  *

@@ -10,18 +10,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author DHANI
  */
-public class ReportesFrame extends javax.swing.JFrame {
+public class GestionReportes extends javax.swing.JFrame {
 
     /**
      * Creates new form GestionClientes
      */
     DefaultTableModel modeloTabla;
-    public ReportesFrame() {
+    public GestionReportes() {
         initComponents();
         this.setLocationRelativeTo(null);
-        String[] titulos = {"id", "placa", "# servicios", "empleado"};
+        String[] titulos = {"placa", "# servicios", "tiempo empleado", "precio total"};
         modeloTabla = new DefaultTableModel(null,titulos);
-        tbClientes.setModel(modeloTabla);
+        tbReporte.setModel(modeloTabla);
     }
 
     /**
@@ -43,7 +43,7 @@ public class ReportesFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         tfTiempoEmpleado = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbClientes = new javax.swing.JTable();
+        tbReporte = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         btnActualizar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
@@ -108,7 +108,7 @@ public class ReportesFrame extends javax.swing.JFrame {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        tbClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tbReporte.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -119,7 +119,7 @@ public class ReportesFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tbClientes);
+        jScrollPane1.setViewportView(tbReporte);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -209,7 +209,7 @@ public class ReportesFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblApellidos;
     private javax.swing.JLabel lblDireccion;
     private javax.swing.JLabel lblNombres;
-    public javax.swing.JTable tbClientes;
+    public javax.swing.JTable tbReporte;
     public javax.swing.JTextField tfTiempoEmpleado;
     public javax.swing.JTextField tfTotalGanancias;
     public javax.swing.JTextField tfTotalServicios;

@@ -8,14 +8,19 @@ import Controller.CtrlCliente;
 import Controller.CtrlEmpleado;
 import Controller.CtrlLogin;
 import Controller.CtrlVehiculo;
+import Controller.CtrlReporte;
 import Model.Cliente;
 import Model.ClienteDTO;
 import Model.Empleado;
 import Model.EmpleadoDTO;
 import Model.Persona;
 import Model.PersonaDTO;
+import Model.Reporte;
+import Model.ReporteDTO;
 import Model.Vehiculo;
 import Model.VehiculoDTO;
+import Model.Reporte;
+import Model.ReporteDTO;
 
 /**
  *
@@ -84,7 +89,6 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnReportes.setText("Reportes");
-        btnReportes.setEnabled(false);
         btnReportes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReportesActionPerformed(evt);
@@ -213,10 +217,15 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
-        ReportesFrame reportesFrame = new ReportesFrame();
-        reportesFrame.setVisible(true);
+        Reporte modReporte = new Reporte();
+        ReporteDTO modR = new ReporteDTO();
+        GestionReportes gestionReportes = new GestionReportes();
+        
+        CtrlReporte ctrlR = new CtrlReporte(modReporte, modR, gestionReportes);
+        ctrlR.iniciar();
         this.dispose();
-        reportesFrame.setLocationRelativeTo(null);
+        gestionReportes.setVisible(true);
+        
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnGestionEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionEmpleadosActionPerformed
