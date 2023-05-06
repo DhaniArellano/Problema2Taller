@@ -6,6 +6,7 @@ package Controller;
 
 import Model.EmpleadoDTO;
 import Model.Empleado;
+import Utils.Validador;
 import View.GestionEmpleados;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +34,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
     private final EmpleadoDTO empleadoDTO;
     private final GestionEmpleados vista;
     private DefaultTableModel model = new DefaultTableModel();
+    private final Validador validador;
 
     public CtrlEmpleado(Empleado modelo, EmpleadoDTO empleadoDTO, GestionEmpleados vista) {
         this.modelo = modelo;
@@ -46,6 +48,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
         this.vista.btnSalirE.addActionListener(this);
         this.vista.tbEmpleados.addMouseListener(this);
         this.vista.addWindowListener(this);
+        this.validador = new Validador();
     }
     public void iniciar() {
         vista.setTitle("Gestion Empleados");
@@ -73,65 +76,118 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
             actualizarElementos();
         }
         if (e.getSource() == vista.btnGuardarE) {
-            modelo.setNombre(vista.tfNombresE.getText());
-            modelo.setApellido(vista.tfApellidosE.getText());
-            //modelo.setDireccion(vista.tfDireccionC.getText());
-            modelo.setCedula(vista.tfCedulaE.getText());
-            modelo.setTelefono(vista.tfCedulaE.getText());
-            modelo.setEmail(vista.tfEmailE.getText());
-            modelo.setCargo(vista.tfCargoE.getText());
-            //modelo.setId_vehiculo((vista.cbVehiculoC.getSelectedIndex() + 1));
-            modelo.setUsuario(vista.tfUsuarioE.getText());
-            modelo.setContrasena(vista.tfContraE.getText());
-            modelo.setRol((String) vista.cbRolE.getSelectedItem());
-            //comboBox.getSelectedIndex()
-            //modelo.setPrecio(Double.parseDouble(vista.txtPrecio.getText()));
-            //modelo.setCantidad(Integer.parseInt(vista.txtCantidad.getText()));
-            if (!modelo.getCedula().equals("")) {
-                if (empleadoDTO.registrarEmpleado(modelo)) {
-                    JOptionPane.showMessageDialog(null, "Registro Guardado");
-                    limpiar();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al Guardar");
-                    //limpiar();
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
-            }
-            actualizarElementos();
-        }
-        if (e.getSource() == vista.btnActualizarE) {
-            modelo.setNombre(vista.tfNombresE.getText());
-            modelo.setApellido(vista.tfApellidosE.getText());
-            //modelo.setDireccion(vista.tfDireccionC.getText());
-            modelo.setCedula(vista.tfCedulaE.getText());
-            modelo.setTelefono(vista.tfCedulaE.getText());
-            modelo.setEmail(vista.tfEmailE.getText());
-            modelo.setCargo(vista.tfCargoE.getText());
-            //modelo.setId_vehiculo((vista.cbVehiculoC.getSelectedIndex() + 1));
-            modelo.setUsuario(vista.tfUsuarioE.getText());
-            modelo.setContrasena(vista.tfContraE.getText());
-            modelo.setRol((String) vista.cbRolE.getSelectedItem());
-            try {
-                modelo.setId(Integer.parseInt(vista.tfIdE.getText()));
-                if (!vista.tfIdE.getText().equals("")) {
-                    if (empleadoDTO.modificarEmpleado(modelo)) {
-                        JOptionPane.showMessageDialog(null, "Registro Modificado");
+            if(validarCampos()){
+                modelo.setNombre(vista.tfNombresE.getText());
+                modelo.setApellido(vista.tfApellidosE.getText());
+                modelo.setCedula(vista.tfCedulaE.getText());
+                modelo.setTelefono(vista.tfCedulaE.getText());
+                modelo.setEmail(vista.tfEmailE.getText());
+                modelo.setCargo(vista.tfCargoE.getText());
+                //modelo.setId_vehiculo((vista.cbVehiculoC.getSelectedIndex() + 1));
+                modelo.setUsuario(vista.tfUsuarioE.getText());
+                modelo.setContrasena(vista.tfContraE.getText());
+                modelo.setRol((String) vista.cbRolE.getSelectedItem());
+                //comboBox.getSelectedIndex()
+                //modelo.setPrecio(Double.parseDouble(vista.txtPrecio.getText()));
+                //modelo.setCantidad(Integer.parseInt(vista.txtCantidad.getText()));
+                if (!modelo.getCedula().equals("")) {
+                    if (empleadoDTO.registrarEmpleado(modelo)) {
+                        JOptionPane.showMessageDialog(null, "Registro Guardado");
                         limpiar();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error al Modificar");
-                        limpiar();
+                        JOptionPane.showMessageDialog(null, "Error al Guardar");
+                        //limpiar();
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
+                    JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
                 }
-
-            } catch (Exception er) {
-                System.err.println(er);
-                JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
-            }finally{
                 actualizarElementos();
+            }else{
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
+                if (vista.tfNombresE.getText().isEmpty()) {
+                    vista.tfNombresE.requestFocus();
+                } else if (vista.tfApellidosE.getText().isEmpty()) {
+                    vista.tfApellidosE.requestFocus();
+                } else if (vista.tfCedulaE.getText().isEmpty()) {
+                    vista.tfCedulaE.requestFocus();
+                } else if (!validador.validarTelefono(vista.tfTelefonoE.getText())) {
+                    JOptionPane.showMessageDialog(null, "Telefono en formato incorrecto (10 Números)");
+                    vista.tfTelefonoE.requestFocus();
+                } else if (!Validador.validarEmail(vista.tfEmailE.getText())) {
+                    JOptionPane.showMessageDialog(null, "Email en formato incorrecto");
+                    vista.tfEmailE.requestFocus();
+                } else if (vista.tfCargoE.getText().isEmpty()) {
+                    vista.tfCargoE.requestFocus();
+                } else if (vista.tfUsuarioE.getText().isEmpty()) {
+                    vista.tfUsuarioE.requestFocus();
+                } else if (vista.tfContraE.getText().isEmpty()) {
+                    vista.tfContraE.requestFocus();
+                } else if (vista.cbRolE.getSelectedItem().toString().equals("-1") || vista.cbRolE.getSelectedItem().toString().equals("") || vista.cbRolE.getSelectedItem().toString() == null) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un rol");
+                    vista.cbRolE.requestFocus();
+                }
             }
+            
+        }
+        if (e.getSource() == vista.btnActualizarE) {
+            if(validarCampos()){
+                modelo.setNombre(vista.tfNombresE.getText());
+                modelo.setApellido(vista.tfApellidosE.getText());
+                //modelo.setDireccion(vista.tfDireccionC.getText());
+                modelo.setCedula(vista.tfCedulaE.getText());
+                modelo.setTelefono(vista.tfCedulaE.getText());
+                modelo.setEmail(vista.tfEmailE.getText());
+                modelo.setCargo(vista.tfCargoE.getText());
+                //modelo.setId_vehiculo((vista.cbVehiculoC.getSelectedIndex() + 1));
+                modelo.setUsuario(vista.tfUsuarioE.getText());
+                modelo.setContrasena(vista.tfContraE.getText());
+                modelo.setRol((String) vista.cbRolE.getSelectedItem());
+                try {
+                    modelo.setId(Integer.parseInt(vista.tfIdE.getText()));
+                    if (!vista.tfIdE.getText().equals("")) {
+                        if (empleadoDTO.modificarEmpleado(modelo)) {
+                            JOptionPane.showMessageDialog(null, "Registro Modificado");
+                            limpiar();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al Modificar");
+                            limpiar();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
+                    }
+
+                } catch (Exception er) {
+                    System.err.println(er);
+                    JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
+                } finally {
+                    actualizarElementos();
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
+                if (vista.tfNombresE.getText().isEmpty()) {
+                    vista.tfNombresE.requestFocus();
+                } else if (vista.tfApellidosE.getText().isEmpty()) {
+                    vista.tfApellidosE.requestFocus();
+                } else if (vista.tfCedulaE.getText().isEmpty()) {
+                    vista.tfCedulaE.requestFocus();
+                } else if (!validador.validarTelefono(vista.tfTelefonoE.getText())) {
+                    JOptionPane.showMessageDialog(null, "Telefono en formato incorrecto (10 Números)");
+                    vista.tfTelefonoE.requestFocus();
+                } else if (!Validador.validarEmail(vista.tfEmailE.getText())) {
+                    JOptionPane.showMessageDialog(null, "Email en formato incorrecto");
+                    vista.tfEmailE.requestFocus();
+                } else if (vista.tfCargoE.getText().isEmpty()) {
+                    vista.tfCargoE.requestFocus();
+                } else if (vista.tfUsuarioE.getText().isEmpty()) {
+                    vista.tfUsuarioE.requestFocus();
+                } else if (vista.tfContraE.getText().isEmpty()) {
+                    vista.tfContraE.requestFocus();
+                } else if (vista.cbRolE.getSelectedItem().toString().equals("-1") || vista.cbRolE.getSelectedItem().toString().equals("") || vista.cbRolE.getSelectedItem().toString() == null) {
+                    JOptionPane.showMessageDialog(null, "Seleccione un rol");
+                    vista.cbRolE.requestFocus();
+                }
+            }
+            
         }
         if (e.getSource() == vista.btnListarE) {
             //limpiarTabla();
@@ -198,6 +254,24 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
         vista.tfUsuarioE.setText(null);
         vista.tfContraE.setText(null);
         vista.tfIdE.setText(null);
+    }
+    public boolean validarCampos(){
+        /*
+        vista.tfNombresE.getText();
+        vista.tfApellidosE.getText();
+        vista.tfCargoE.getText();
+        vista.tfCedulaE.getText();
+        vista.tfTelefonoE.getText();
+        vista.tfEmailE.
+        vista.cbRolE.setSelectedIndex(0);
+        vista.tfUsuarioE.getText();
+        vista.tfContraE.getText();
+        vista.tfIdE.getText();
+        */
+        boolean resultado;
+        resultado = !(vista.tfNombresE.getText().isEmpty() || vista.tfApellidosE.getText().isEmpty() || vista.tfCargoE.getText().isEmpty() || vista.tfCedulaE.getText().isEmpty() || vista.tfTelefonoE.getText().isEmpty() || !validador.validarEmail(vista.tfEmailE.getText()) || vista.tfUsuarioE.getText().isEmpty() || vista.tfContraE.getText().isEmpty() || vista.cbRolE.getSelectedItem().toString() == null || !validador.validarTelefono(vista.tfTelefonoE.getText()));
+        System.out.println("validar campos: " + resultado);
+        return resultado;
     }
     public void listar(JTable tbEmpleados) {
         centrarCeldas(tbEmpleados);
