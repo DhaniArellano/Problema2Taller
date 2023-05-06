@@ -45,7 +45,7 @@ public class GestionVehiculos extends javax.swing.JFrame {
         lblEntrega = new javax.swing.JLabel();
         tfEntrega = new javax.swing.JTextField();
         lblServicio = new javax.swing.JLabel();
-        cbServicio = new javax.swing.JComboBox<>();
+        cbServicios = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         btnAsignarTurno = new javax.swing.JButton();
         tfTurno = new javax.swing.JTextField();
@@ -83,8 +83,6 @@ public class GestionVehiculos extends javax.swing.JFrame {
         tfEntrega.setText("2023-01-01");
 
         lblServicio.setText("Servicio:");
-
-        cbServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel1.setText("Turno:");
 
@@ -139,7 +137,7 @@ public class GestionVehiculos extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAsignarTurno))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cbServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbServicios, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnServicio)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -159,7 +157,7 @@ public class GestionVehiculos extends javax.swing.JFrame {
                             .addComponent(tfTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbServicios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblServicio)
                             .addComponent(btnServicio))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -292,7 +290,7 @@ public class GestionVehiculos extends javax.swing.JFrame {
     public javax.swing.JButton btnNuevoV;
     public javax.swing.JButton btnSalirV;
     public javax.swing.JButton btnServicio;
-    public javax.swing.JComboBox<String> cbServicio;
+    public javax.swing.JComboBox<String> cbServicios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

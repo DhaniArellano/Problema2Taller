@@ -4,6 +4,8 @@
  */
 package View;
 
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -21,6 +23,11 @@ public class GestionServicios extends javax.swing.JFrame {
         String[] titulos = {"id", "tipo", "tiempo", "precio", "descripcion"};
         modeloTabla = new DefaultTableModel(null, titulos);
         tbServicios.setModel(modeloTabla);
+// Deshabilitar el botón de cerrar
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        // Quitar el botón de cerrar del decorador de la ventana
+        //setUndecorated(true);
         
         
     }
@@ -44,7 +51,7 @@ public class GestionServicios extends javax.swing.JFrame {
         btnLimpiar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        btnListar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbServicios = new javax.swing.JTable();
@@ -79,7 +86,7 @@ public class GestionServicios extends javax.swing.JFrame {
 
         btnEliminar.setText("Eliminar");
 
-        btnListar.setText("Listar");
+        btnActualizar.setText("Actualizar");
 
         btnSalir.setText("Salir");
 
@@ -146,9 +153,9 @@ public class GestionServicios extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)
+                        .addComponent(btnActualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnListar)
+                        .addComponent(btnEliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSalir)))
                 .addGap(7, 7, 7))
@@ -181,9 +188,9 @@ public class GestionServicios extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLimpiar)
                     .addComponent(btnAgregar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnListar)
-                    .addComponent(btnSalir))
+                    .addComponent(btnActualizar)
+                    .addComponent(btnSalir)
+                    .addComponent(btnEliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -197,10 +204,10 @@ public class GestionServicios extends javax.swing.JFrame {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnActualizar;
     public javax.swing.JButton btnAgregar;
     public javax.swing.JButton btnEliminar;
     public javax.swing.JButton btnLimpiar;
-    public javax.swing.JButton btnListar;
     public javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
