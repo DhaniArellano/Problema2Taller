@@ -183,10 +183,13 @@ public class ReportesFrame extends javax.swing.JFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
+        
         Principal principal = new Principal();
         principal.setVisible(true);
         this.dispose();
+        principal.btnReportes.setEnabled(true);
         principal.setLocationRelativeTo(null);
+        
     }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
