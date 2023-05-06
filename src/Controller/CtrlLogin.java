@@ -54,27 +54,31 @@ public class CtrlLogin implements ActionListener {
             String usuario, contraseña, rol;
             usuario = vista.tfUsername.getText();
             contraseña = vista.tfPassword.getText();
-            if(personaDTO.validarLogin(usuario, contraseña)){
-                //JOptionPane.showMessageDialog(null, "Correcto");
-                cerrar();
-                Principal principal = new Principal();
-                principal.setVisible(true);
-                principal.setLocationRelativeTo(null);
-                principal.lblUsuario.setText(usuario.toUpperCase());
-                try{
-                    rol = personaDTO.validarRol(usuario);
-                    if (rol.equals("admin") || rol.equals("standard")) {
-                        principal.btnReportes.setEnabled(true);
-                    } else {
-                        System.out.println("es un cliente");
+            if(validarCampos()){
+                if (personaDTO.validarLogin(usuario, contraseña)) {
+                    //JOptionPane.showMessageDialog(null, "Correcto");
+                    cerrar();
+                    Principal principal = new Principal();
+                    principal.setVisible(true);
+                    principal.setLocationRelativeTo(null);
+                    principal.lblUsuario.setText(usuario.toUpperCase());
+                    try {
+                        rol = personaDTO.validarRol(usuario);
+                        if (rol.equals("admin") || rol.equals("standard")) {
+                            //principal.btnReportes.setEnabled(true);
+                        } else {
+                            //principal.btnReportes.setEnabled(false);
+                        }
+                        //this.dispose();    
+                    } catch (Exception ex) {
+
                     }
-                    //this.dispose();    
-                }catch(Exception ex){
-                    
+                } else {
+                    JOptionPane.showMessageDialog(null, "Usuario o Contraseña invalida");
+                    vista.tfUsername.requestFocus();
                 }
-                
             }else{
-                JOptionPane.showMessageDialog(null, "Usuario o Contraseña invalida");
+                JOptionPane.showMessageDialog(null, "Por favor ingrese los datos requeridos");
                 vista.tfUsername.requestFocus();
             }
         }
@@ -82,6 +86,13 @@ public class CtrlLogin implements ActionListener {
             vista.tfUsername.setText(null);
             vista.tfPassword.setText(null);
         }
+    }
+    public boolean validarCampos(){
+        boolean validar = false;
+        if(!vista.tfUsername.getText().equals("")){
+            validar = true;
+        }
+        return validar;
     }
     
 }
