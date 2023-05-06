@@ -85,7 +85,12 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
         if (e.getSource() == vista.btnGuardarC) {
             String placa;
             int id;
-            if (validarCampos()) {
+            id = 0; 
+            placa = vista.cbVehiculoC.getSelectedItem().toString();
+            if (placa != null || !placa.equals("")) {
+                id = clienteDTO.verificarAuto(placa);
+            }
+            if (validarCampos() && !verificarVehiculoAsociado(id)) {
                 modelo.setNombre(vista.tfNombresC.getText());
                 modelo.setApellido(vista.tfApellidosC.getText());
                 modelo.setDireccion(vista.tfDireccionC.getText());
@@ -96,11 +101,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
                 modelo.setEmail(vista.tfEmailC.getText());
                 //System.out.println("item: "+vista.cbVehiculoC.getSelectedItem().toString());
                 //System.out.println("index: "+vista.cbVehiculoC.getSelectedIndex());
-                placa = vista.cbVehiculoC.getSelectedItem().toString();
-                if(placa != null || !placa.equals("")){
-                    id = clienteDTO.verificarAuto(placa);
-                    modelo.setId_vehiculo(id);
-                }
+                modelo.setId_vehiculo(id);
                 if (clienteDTO.registrarCliente(modelo)) {
                     JOptionPane.showMessageDialog(null, "Registro Guardado");
                     limpiar();
@@ -135,22 +136,36 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             actualizarElementos();
         }
         if (e.getSource() == vista.btnActualizarC) {
-            String placa;
-            int id;
-            if (validarCampos()) {
+            String placa="";
+            int id ;
+            int idCliente = 0;
+            int idVehiculo = 0;
+            try{
+                placa = vista.cbVehiculoC.getSelectedItem().toString();
+                if (placa != null || !placa.equals("")) {
+                    idVehiculo = clienteDTO.verificarAuto(placa);
+                    idCliente = Integer.parseInt(vista.tfIdC.getText());
+                    System.out.println("placa: "+placa+" idVehiculo:"+idVehiculo);
+                }
+            }catch(Exception exc){
+                System.err.println(exc);
+            }
+            if (validarCampos() && validarActualizacion(idCliente, idVehiculo)) {
                 modelo.setNombre(vista.tfNombresC.getText());
                 modelo.setApellido(vista.tfApellidosC.getText());
                 modelo.setDireccion(vista.tfDireccionC.getText());
                 modelo.setCedula(vista.tfCedulaC.getText());
                 modelo.setTelefono(vista.tfTelefonoC.getText());
                 modelo.setEmail(vista.tfEmailC.getText());
+                
+                modelo.setUsuario(vista.tfUsuarioC.getText());
+                modelo.setContrasena(vista.tfContraC.getText());
                 placa = vista.cbVehiculoC.getSelectedItem().toString();
                 if (placa != null || !placa.equals("")) {
                     id = clienteDTO.verificarAuto(placa);
+                    idCliente = Integer.parseInt(vista.tfIdC.getText());
                     modelo.setId_vehiculo(id);
                 }
-                modelo.setUsuario(vista.tfUsuarioC.getText());
-                modelo.setContrasena(vista.tfContraC.getText());
                 try {
                     modelo.setId(Integer.parseInt(vista.tfIdC.getText()));
                     if (!vista.tfIdC.getText().equals("")) {
@@ -214,7 +229,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
                 JOptionPane.showMessageDialog(null, "Registro Eliminado");
                 limpiar();
             } else {
-                JOptionPane.showMessageDialog(null, "Error al Eliminar");
+                JOptionPane.showMessageDialog(null, "Error al Eliminar, existe una referencia con otra entidad");
                 limpiar();
             }
             }catch(Exception err){
@@ -224,6 +239,29 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             }
         }
 
+    }
+    public boolean verificarVehiculoAsociado(int id){
+        boolean resultado;
+        resultado = false;
+        try{
+            resultado = clienteDTO.verificarVehiculoAsociado(id);
+            System.out.println("resultado vehiculo asociado: "+resultado);
+            if (resultado) {
+                JOptionPane.showMessageDialog(null, "El vehiculo ya está asociado a otro cliente");
+            }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "error consultado si el vehiculo ya está asociado a otra persona");
+        }
+        return resultado;
+    }
+    public boolean validarActualizacion(int idVehiculo, int idCliente){
+        boolean resultado = false;
+        if(clienteDTO.validarActualizacion(idVehiculo, idCliente)){
+            resultado = true;
+        }else{
+            JOptionPane.showMessageDialog(null, "El vehículo ya está asociado a otro cliente");
+        }
+        return resultado;
     }
     public void mouseClicked(MouseEvent e) {
         // Manejar eventos de clic en la tabla
@@ -299,8 +337,8 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             objeto[4] = lista.get(i).getTelefono();
             model.addRow(objeto);
         }
-        //tbClientes.setRowHeight(35);
-        //tbClientes.setRowMargin(10);
+        tbClientes.setRowHeight(25);
+        tbClientes.setRowMargin(10);
     }
     public int verificarAuto(String placa){
         int veh=0;
@@ -348,7 +386,10 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
         }
     }
     private boolean validarCampos() {
-        return !(vista.tfCedulaC.getText().isEmpty() || vista.tfNombresC.getText().isEmpty() || vista.tfApellidosC.getText().isEmpty() || vista.tfDireccionC.getText().isEmpty() || !validador.validarEmail(vista.tfEmailC.getText()) || vista.tfUsuarioC.getText().isEmpty() || vista.tfContraC.getText().isEmpty() || vista.cbVehiculoC.getSelectedIndex()==0 || vista.cbVehiculoC.getSelectedItem().toString() == null || !validador.validarTelefono(vista.tfTelefonoC.getText()));
+        boolean resultado;
+        resultado = !(vista.tfCedulaC.getText().isEmpty() || vista.tfNombresC.getText().isEmpty() || vista.tfApellidosC.getText().isEmpty() || vista.tfDireccionC.getText().isEmpty() || !validador.validarEmail(vista.tfEmailC.getText()) || vista.tfUsuarioC.getText().isEmpty() || vista.tfContraC.getText().isEmpty() || vista.cbVehiculoC.getSelectedIndex()==0 || vista.cbVehiculoC.getSelectedItem().toString() == null || !validador.validarTelefono(vista.tfTelefonoC.getText()));
+        System.out.println("validar campos: "+resultado);
+        return resultado;
     }
 
 

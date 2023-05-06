@@ -50,7 +50,7 @@ public class CtrlServicio extends MouseAdapter implements ActionListener, Window
         this.vista.btnAgregar.addActionListener(this);
         this.vista.btnEliminar.addActionListener(this);
         this.vista.btnLimpiar.addActionListener(this);
-        this.vista.btnListar.addActionListener(this);
+        this.vista.btnActualizar.addActionListener(this);
         this.vista.btnSalir.addActionListener(this);
         this.vista.tbServicios.addMouseListener(this);
         this.vista.addWindowListener(this);
@@ -81,7 +81,7 @@ public class CtrlServicio extends MouseAdapter implements ActionListener, Window
         //vista.tfPlaca.setText(null);
     }
     public void cargarInformacion(int id, String placa){
-        System.out.println("el id y placa es: " +id+" "+placa);
+        //System.out.println("el id y placa es: " +id+" "+placa);
         vista.tfIdVehiculo.setText(Integer.toString(id));
         vista.tfPlaca.setText(placa);
     }
@@ -100,7 +100,7 @@ public class CtrlServicio extends MouseAdapter implements ActionListener, Window
             objeto[4] = lista.get(i).getDescripcion();
             model.addRow(objeto);
         }
-        tbServicios.setRowHeight(35);
+        tbServicios.setRowHeight(25);
         tbServicios.setRowMargin(10);
     }
     void centrarCeldas(JTable tbServicios) {
@@ -182,11 +182,11 @@ public class CtrlServicio extends MouseAdapter implements ActionListener, Window
                 actualizarElementos();
             }
         }
-        if (e.getSource() == vista.btnListar) {
+        if (e.getSource() == vista.btnActualizar) {
             actualizarElementos();
         }
         if (e.getSource() == vista.btnSalir) {
-            vista.dispose();
+            cerrar();
         }
         
         
@@ -228,7 +228,7 @@ public class CtrlServicio extends MouseAdapter implements ActionListener, Window
 
     @Override
     public void windowClosing(WindowEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
     }
 
     @Override

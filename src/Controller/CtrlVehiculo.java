@@ -26,6 +26,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Set;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 /**
@@ -38,6 +40,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
     private final VehiculoDTO vehiculoDTO;
     private final GestionVehiculos vista;
     private DefaultTableModel model = new DefaultTableModel();
+    private ServicioDTO servicioDTO = new ServicioDTO();
 
     public CtrlVehiculo(Vehiculo modelo, VehiculoDTO vehiculoDTO, GestionVehiculos vista) {
         this.modelo = modelo;
@@ -52,6 +55,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
         this.vista.btnServicio.addActionListener(this);
         this.vista.tbVehiculos.addMouseListener(this);
         this.vista.addWindowListener(this);
+        
     }
     public void iniciar() {
         vista.setTitle("Gestion Vehiculos");
@@ -68,21 +72,39 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
         limpiarTabla();
         listar(vista.tbVehiculos);
     }
+    public void actualizarElementos() {
+        //limpiar();
+        limpiarTabla();
+        limpiarCombo(vista.cbServicios);
+        listar(vista.tbVehiculos);
+        if(vista.tfIdV.getText() != ""){
+            rellenarCombo(vista.cbServicios);
+        }
+        
+    }
+    public void limpiarCombo(JComboBox cbServicios) {
+        cbServicios.removeAllItems();
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         if (e.getSource() == vista.btnServicio) {
-            Servicio modServicio = new Servicio();
-            ServicioDTO modS = new ServicioDTO();
-            GestionServicios gestionServicios = new GestionServicios();
-            CtrlServicio ctrlS = new CtrlServicio(modServicio, modS, gestionServicios);
-            int id = Integer.parseInt(vista.tfIdV.getText());
-            String placa = vista.tfPlaca.getText();
-            ctrlS.iniciar(id, placa);
-            //this.dispose();
-            gestionServicios.setVisible(true);
-            System.out.println("gestionServicios");
+            
+            try{
+                Servicio modServicio = new Servicio();
+                ServicioDTO modS = new ServicioDTO();
+                GestionServicios gestionServicios = new GestionServicios();
+                CtrlServicio ctrlS = new CtrlServicio(modServicio, modS, gestionServicios);
+                int id = Integer.parseInt(vista.tfIdV.getText());
+                String placa = vista.tfPlaca.getText();
+                ctrlS.iniciar(id, placa);
+                //this.dispose();
+                gestionServicios.setVisible(true);
+            }catch(Exception er){
+                JOptionPane.showMessageDialog(null, "Seleccione un vehículo de la tabla");
+            }
+
         }
         if (e.getSource() == vista.btnNuevoV) {
             limpiar();
@@ -155,7 +177,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
                 JOptionPane.showMessageDialog(null, "Registro Eliminado");
                 limpiar();
             } else {
-                JOptionPane.showMessageDialog(null, "Error al Eliminar");
+                JOptionPane.showMessageDialog(null, "Error al Eliminar, existe una relación con este vehículo y un cliente");
                 limpiar();
             }
             }catch(Exception err){
@@ -165,25 +187,37 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
             }
         }
     }
+    public void rellenarCombo(JComboBox cbServicios) {
+        try{
+            int id = Integer.parseInt(vista.tfIdV.getText());
+            Set<String> datos = servicioDTO.obtenerServicios(id);
+            //modelC = (DefaultComboBoxModel) cbVehiculoC.getModel();
+            //cbServicios.addItem("");
+            //modelC.addAll(datos);
+            for (String servicio : datos) {
+                cbServicios.addItem(servicio);
+            }
+        }catch(Exception e){
+
+        }
+        
+        //cbVehiculoC.setSelectedIndex(-1);
+        //cbVehiculoC.setModel(modelC);
+    }
     public void mouseClicked(MouseEvent e) {
         // Manejar eventos de clic en la tabla
         if (e.getSource() == vista.tbVehiculos) {
             int filaSeleccionada = vista.tbVehiculos.getSelectedRow();
             // Obtener valor del campo ID de la fila seleccionada
             String id = vista.tbVehiculos.getValueAt(filaSeleccionada, 0).toString();
-            // Realizar acciones con el valor del ID obtenido
-            System.out.println(id);
-            //int id = Integer.parseInt((String) vista.tbClientes.getValueAt(fila, 0).toString());
-            //String nom = (String) vista.tabla.getValueAt(fila, 1);
-            //String correo = (String) vista.tabla.getValueAt(fila, 2);
-            //String tel = (String) vista.tabla.getValueAt(fila, 3);
-            //vista.txtId.setText("" + id);
-            //modelo.setId(clienteDTO.consultaCliente(id).getId());
             
             if (id != null) {
                 var vh = vehiculoDTO.consultaVehiculo(Integer.parseInt(id));
                 //JOptionPane.showMessageDialog(null, "consulta realizada");
                 limpiar();
+                //actualizarElementos();
+                //rellenarCombo(vista.cbServicios);
+                //vista.cbServicios.setSelectedIndex(1);
                 vista.tfIdV.setText(Integer.toString(vh.getId()));
                 vista.tfPlaca.setText(vh.getPlaca());
                 vista.tfTipo.setText(vh.getTipo());
@@ -191,7 +225,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
                 vista.tfMotivo.setText(vh.getMotivoIngreso());
                 vista.tfIngreso.setText(vh.getFechaIngreso().toString());
                 vista.tfEntrega.setText(vh.getFechaEntrega().toString());
-
+                actualizarElementos();
             } else {
                 JOptionPane.showMessageDialog(null, "Error al consultar");
                 //limpiar();
@@ -205,7 +239,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
         vista.tfMotivo.setText(null);
         vista.tfIngreso.setText("2023-01-01");
         vista.tfEntrega.setText("2023-01-01");
-        vista.cbServicio.setSelectedIndex(0);
+        //vista.cbServicios.setSelectedIndex(0);
         vista.tfTurno.setText(null);
         vista.tfIdV.setText(null);
     }
@@ -223,16 +257,10 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
             objeto[4] = lista.get(i).getFechaEntrega();
             model.addRow(objeto);
         }
-        tbVehiculos.setRowHeight(35);
+        tbVehiculos.setRowHeight(25);
         tbVehiculos.setRowMargin(10);
     }
-    public void actualizarElementos() {
-        //limpiar();
-        limpiarTabla();
-        //limpiarCombo(vista.cbVehiculoC);
-        listar(vista.tbVehiculos);
-        //rellenarCombo(vista.cbVehiculoC);
-    }
+    
 
     void centrarCeldas(JTable tbClientes) {
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
