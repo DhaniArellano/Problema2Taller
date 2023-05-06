@@ -32,7 +32,7 @@ public class CtrlLogin implements ActionListener {
         this.vista.btnLimpiar.addActionListener(this);
     }
     public void iniciar() {
-        vista.setTitle("Gestion Clientes");
+        vista.setTitle("Login");
         vista.setLocationRelativeTo(null);
         //vista.txtId.setVisible(false);
     }
@@ -51,7 +51,7 @@ public class CtrlLogin implements ActionListener {
             vista.tfUsername.requestFocus();
         }
         if (e.getSource() == vista.btnValidar) {
-            String usuario, contraseña;
+            String usuario, contraseña, rol;
             usuario = vista.tfUsername.getText();
             contraseña = vista.tfPassword.getText();
             if(personaDTO.validarLogin(usuario, contraseña)){
@@ -59,8 +59,20 @@ public class CtrlLogin implements ActionListener {
                 cerrar();
                 Principal principal = new Principal();
                 principal.setVisible(true);
-                //this.dispose();
                 principal.setLocationRelativeTo(null);
+                principal.lblUsuario.setText(usuario.toUpperCase());
+                try{
+                    rol = personaDTO.validarRol(usuario);
+                    if (rol.equals("admin") || rol.equals("standard")) {
+                        principal.btnReportes.setEnabled(true);
+                    } else {
+                        System.out.println("es un cliente");
+                    }
+                    //this.dispose();    
+                }catch(Exception ex){
+                    
+                }
+                
             }else{
                 JOptionPane.showMessageDialog(null, "Usuario o Contraseña invalida");
                 vista.tfUsername.requestFocus();

@@ -36,4 +36,24 @@ public class PersonaDTO extends Conexion {
         }
         return resultado;
     }
+    public String validarRol(String username){
+        PreparedStatement ps = null;
+        ResultSet rs;
+        String rol = "";
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT rol FROM Persona WHERE usuario = ?");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                rol = rs.getString(1);
+            }else{
+                rol = "cliente";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+        }
+        return rol;
+    }
 }
