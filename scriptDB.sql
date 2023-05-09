@@ -10,11 +10,13 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema tallerDb
 -- -----------------------------------------------------
-
+-- borrar db si ya existe
+DROP DATABASE IF EXISTS `tallerDb`;
 -- -----------------------------------------------------
 -- Schema tallerDb
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `tallerDb` DEFAULT CHARACTER SET utf8 ;
+
 USE `tallerDb` ;
 
 -- -----------------------------------------------------
@@ -56,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `tallerDb`.`Persona` (
   CONSTRAINT `fk_Persona_Vehiculo`
     FOREIGN KEY (`Vehiculo_idVehiculo`)
     REFERENCES `tallerDb`.`Vehiculo` (`idVehiculo`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -76,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `tallerDb`.`Servicios` (
   CONSTRAINT `fk_Servicios_Vehiculo1`
     FOREIGN KEY (`Vehiculo_idVehiculo`)
     REFERENCES `tallerDb`.`Vehiculo` (`idVehiculo`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -84,3 +86,27 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- insertando datos de prueba 
+-- Insertar usuario Administrador con contraseña 1234
+INSERT INTO `persona` (`idPersona`, `nombre`, `apellido`, `cedula`, `telefono`, `email`, `usuario`, `contraseña`, `direccion`, `Vehiculo_idVehiculo`, `rol`, `cargo`) VALUES (NULL, NULL, NULL, '1', NULL, NULL, 'admin', 'jmcRXc9CttBo2cVdW1b5Tw==', NULL, NULL, 'admin', 'administrador');
+-- Insertar una empleado 
+INSERT INTO `tallerDb`.`Persona`
+  (`nombre`, `apellido`, `cedula`, `telefono`, `email`, `usuario`, `contraseña`, `direccion`, `Vehiculo_idVehiculo`, `rol`, `cargo`)
+VALUES
+  ('Juan', 'Pérez', '12345678', '9321564587', 'juanpe@gmail.com', 'jupe', 'jmcRXc9CttBo2cVdW1b5Tw==', 'Calle 1', NULL, 'standard', 'Mecánico');
+
+-- Insertar un vehículo y relacionarlo con una persona
+INSERT INTO `tallerDb`.`Vehiculo`
+  (`placa`, `tipo`, `estado`, `motivo`, `fechaIngreso`, `fechaEntrega`)
+VALUES
+  ('ABC123', 'Automóvil', 'En taller', 'Revisión de frenos', '2023-05-08', '2023-05-10');
+INSERT INTO `tallerDb`.`Persona`
+  (`nombre`, `apellido`, `cedula`, `telefono`, `email`, `usuario`, `contraseña`, `direccion`, `Vehiculo_idVehiculo`, `rol`, `cargo`)
+VALUES
+  ('María', 'González', '87654321', '6985125874', 'mariago@gmail.com', 'mago', 'jmcRXc9CttBo2cVdW1b5Tw==', 'Calle 2', LAST_INSERT_ID(), NULL, NULL);
+
+-- Insertar un servicio y relacionarlo con un vehículo
+INSERT INTO `tallerDb`.`Servicios`
+  (`tipo`, `descripcion`, `tiempo`, `precio`, `Vehiculo_idVehiculo`)
+VALUES
+  ('Revisión', 'Revisión de frenos', 1.5, 100, 1);
