@@ -28,42 +28,11 @@ import View.GestionEmpleados;
 public class Main {
 
     public static void main(String[] args) {
-
         Persona modPersona = new Persona();
         PersonaDTO modP = new PersonaDTO();
         Login login = new Login(); 
-        //login.setVisible(true);
-        //login.setLocationRelativeTo(null);
         CtrlLogin ctrlL = new CtrlLogin(modPersona, modP, login);
         ctrlL.iniciar();
         login.setVisible(true);
-        /*
-        Cliente modCliente = new Cliente(); 
-        ClienteDTO modC = new ClienteDTO();
-        GestionClientes gestionClientes = new GestionClientes();
-         
-        CtrlCliente ctrl = new CtrlCliente(modCliente, modC,gestionClientes);
-        ctrl.iniciar();
-        gestionClientes.setVisible(true);
-        */
-        /*
-        Vehiculo modVehiculo = new Vehiculo();
-        VehiculoDTO modV = new VehiculoDTO();
-        
-        GestionVehiculos gestionVehiculos = new GestionVehiculos();
-        CtrlVehiculo ctrlV = new CtrlVehiculo(modVehiculo, modV, gestionVehiculos);
-        ctrlV.iniciar();
-        gestionVehiculos.setVisible(true);
-        */
-        /*
-        Empleado modEmpleado = new Empleado();
-        EmpleadoDTO modE = new EmpleadoDTO();
-        GestionEmpleados gestionEmpleados = new GestionEmpleados();
-
-        CtrlEmpleado ctrlE = new CtrlEmpleado(modEmpleado, modE, gestionEmpleados);
-        ctrlE.iniciar();
-        gestionEmpleados.setVisible(true);
-        */
     }
-
 }
