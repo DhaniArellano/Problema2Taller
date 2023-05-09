@@ -146,6 +146,60 @@ public class ServicioDTO extends Conexion {
         }
         return datos;
     }
+    public int numeroServiciosPorId(int id) {
+        int numServicios = 0;
+        ResultSet rs;
+        PreparedStatement ps = null;
+        //List<Cliente> datos = new ArrayList<>();
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT COUNT(*) AS total_servicios FROM servicios WHERE Vehiculo_idVehiculo=?;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                numServicios = rs.getInt(1);
+            }
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+        return numServicios;
+    }
+    public float totalSumaPrecioPorId(int id) {
+        float sumaServicios = 0;
+        ResultSet rs;
+        PreparedStatement ps = null;
+        //List<Cliente> datos = new ArrayList<>();
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT SUM(precio) as total_precio FROM Servicios WHERE Vehiculo_idVehiculo=?;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                sumaServicios = rs.getInt(1);
+            }
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+        return sumaServicios;
+    }
+    public float totalSumaTiempoPorId(int id) {
+        float sumaTiempo = 0;
+        ResultSet rs;
+        PreparedStatement ps = null;
+        //List<Cliente> datos = new ArrayList<>();
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT SUM(tiempo) as total_tiempo FROM Servicios WHERE Vehiculo_idVehiculo=?;");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                sumaTiempo = rs.getInt(1);
+            }
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
+        return sumaTiempo;
+    }
     public List<Servicio> listarServiciosTest(int id) {
         System.out.println(id);
         List<Servicio> datos = new ArrayList<>();

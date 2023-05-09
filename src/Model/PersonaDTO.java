@@ -32,7 +32,6 @@ public class PersonaDTO extends Conexion {
             resultado = rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
         }
         return resultado;
     }
@@ -48,12 +47,30 @@ public class PersonaDTO extends Conexion {
             if (rs.next()) {
                 rol = rs.getString(1);
             }else{
-                rol = "cliente";
+                System.out.println(rol);
+                //rol = "cliente";
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
         }
         return rol;
+    }
+    public int devolverId(String username){
+        PreparedStatement ps = null;
+        ResultSet rs;
+        int id = 0;
+        try {
+            Connection con = getConexion();
+            ps = con.prepareStatement("SELECT idPersona FROM Persona WHERE usuario = ?");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } 
+        return id;
     }
 }

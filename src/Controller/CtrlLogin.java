@@ -8,8 +8,16 @@ package Controller;
  *
  * @author DHANI
  */
+import Model.Cliente;
+import Model.ClienteDTO;
 import Model.PersonaDTO;
 import Model.Persona;
+import Model.Vehiculo;
+import Model.VehiculoDTO;
+import Model.Servicio;
+import Model.ServicioDTO;
+
+import View.GestionUnicaUsuario;
 import View.Login;
 import View.Principal;
 import java.awt.event.ActionEvent;
@@ -34,6 +42,7 @@ public class CtrlLogin implements ActionListener {
     public void iniciar() {
         vista.setTitle("Login");
         vista.setLocationRelativeTo(null);
+        vista.setVisible(true);
         //vista.txtId.setVisible(false);
     }
     public void cerrar(){
@@ -57,22 +66,31 @@ public class CtrlLogin implements ActionListener {
             if(validarCampos()){
                 if (personaDTO.validarLogin(usuario, contraseña)) {
                     //JOptionPane.showMessageDialog(null, "Correcto");
-                    cerrar();
-                    Principal principal = new Principal();
-                    principal.setVisible(true);
-                    principal.setLocationRelativeTo(null);
-                    principal.lblUsuario.setText(usuario.toUpperCase());
-                    try {
                         rol = personaDTO.validarRol(usuario);
-                        if (rol.equals("admin") || rol.equals("standard")) {
-                            //principal.btnReportes.setEnabled(true);
-                        } else {
-                            //principal.btnReportes.setEnabled(false);
+                        if (rol == null) {
+                            cerrar();
+                            Persona modPersona = new Persona();
+                            PersonaDTO modP = new PersonaDTO();
+                            Cliente modCliente = new Cliente();
+                            ClienteDTO modC = new ClienteDTO();
+                            Vehiculo modVehiculo = new Vehiculo();
+                            VehiculoDTO modV = new VehiculoDTO();
+                            Servicio modServicio = new Servicio();
+                            ServicioDTO modS = new ServicioDTO();
+                            GestionUnicaUsuario principalCliente = new GestionUnicaUsuario();
+                            CtrlGestionUnicaUsuario ctrlGestionUnicaUsuario = new CtrlGestionUnicaUsuario(modPersona, modP, modCliente, modC, modVehiculo, modV, modServicio, modS, principalCliente, usuario);
+                            //this.vista.dispose();
+                            ctrlGestionUnicaUsuario.iniciar();
+                            principalCliente.setVisible(true);
+                            //principalCliente.tf
+                        }else{
+                            cerrar();
+                            Principal principal = new Principal();
+                            principal.setVisible(true);
+                            principal.setLocationRelativeTo(null);
+                            principal.lblUsuario.setText(usuario.toUpperCase());
                         }
                         //this.dispose();    
-                    } catch (Exception ex) {
-
-                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuario o Contraseña invalida");
                     vista.tfUsername.requestFocus();
