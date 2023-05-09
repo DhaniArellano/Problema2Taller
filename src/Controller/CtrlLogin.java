@@ -23,12 +23,14 @@ import View.Principal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import Utils.Encoder;
 
 
 public class CtrlLogin implements ActionListener {
     private final Persona modelo;
     private final PersonaDTO personaDTO;
     private final Login vista;
+    private final Encoder encoder;
 
     public CtrlLogin(Persona modelo, PersonaDTO personaDTO, Login vista) {
         this.modelo = modelo;
@@ -38,6 +40,7 @@ public class CtrlLogin implements ActionListener {
         this.vista.btnSalir.addActionListener(this);
         this.vista.btnValidar.addActionListener(this);
         this.vista.btnLimpiar.addActionListener(this);
+        this.encoder = new Encoder();
     }
     public void iniciar() {
         vista.setTitle("Login");
@@ -62,7 +65,7 @@ public class CtrlLogin implements ActionListener {
         if (e.getSource() == vista.btnValidar) {
             String usuario, contraseña, rol;
             usuario = vista.tfUsername.getText();
-            contraseña = vista.tfPassword.getText();
+            contraseña = encoder.encrypt(vista.tfPassword.getText());
             if(validarCampos()){
                 if (personaDTO.validarLogin(usuario, contraseña)) {
                     //JOptionPane.showMessageDialog(null, "Correcto");

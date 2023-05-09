@@ -28,6 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import Utils.Validador;
+import Utils.Encoder;
 /**
  *
  * @author DHANI
@@ -39,6 +40,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
     private DefaultTableModel model = new DefaultTableModel();
     private DefaultComboBoxModel<String> modelC = new DefaultComboBoxModel<>();
     private final Validador validador;
+    private final Encoder encoder;
 
     public CtrlCliente(Cliente modelo, ClienteDTO clienteDTO, GestionClientes vista) {
         this.modelo = modelo;
@@ -54,11 +56,14 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
         this.vista.addWindowListener(this);
         this.vista.cbVehiculoC.addActionListener(this);
         this.validador = new Validador();
-        
+        this.encoder = new Encoder();
     }
     public void iniciar() {
         vista.setTitle("Gestion Clientes");
         vista.setLocationRelativeTo(null);
+        limpiarTabla();
+        listar(vista.tbClientes);
+        rellenarCombo(vista.cbVehiculoC);
         //vista.txtId.setVisible(false);
         
     }
@@ -69,9 +74,6 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
     @Override
     public void windowOpened(WindowEvent e) {
         // Función que se ejecuta al cargar el JFrame
-        limpiarTabla();
-        listar(vista.tbClientes);
-        rellenarCombo(vista.cbVehiculoC);
     }
 
     @Override
@@ -97,7 +99,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
                 modelo.setCedula(vista.tfCedulaC.getText());
                 modelo.setTelefono(vista.tfTelefonoC.getText());
                 modelo.setUsuario(vista.tfUsuarioC.getText());
-                modelo.setContrasena(vista.tfContraC.getText());
+                modelo.setContrasena(encoder.encrypt(vista.tfContraC.getText()));
                 modelo.setEmail(vista.tfEmailC.getText());
                 //System.out.println("item: "+vista.cbVehiculoC.getSelectedItem().toString());
                 //System.out.println("index: "+vista.cbVehiculoC.getSelectedIndex());
@@ -159,7 +161,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
                 modelo.setEmail(vista.tfEmailC.getText());
                 
                 modelo.setUsuario(vista.tfUsuarioC.getText());
-                modelo.setContrasena(vista.tfContraC.getText());
+                modelo.setContrasena(encoder.encrypt(vista.tfContraC.getText()));
                 placa = vista.cbVehiculoC.getSelectedItem().toString();
                 if (placa != null || !placa.equals("")) {
                     id = clienteDTO.verificarAuto(placa);
@@ -229,7 +231,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
                 JOptionPane.showMessageDialog(null, "Registro Eliminado");
                 limpiar();
             } else {
-                JOptionPane.showMessageDialog(null, "Error al Eliminar, existe una referencia con otra entidad");
+                JOptionPane.showMessageDialog(null, "Error al Eliminar, primero elimine el vehiculo asociado");
                 limpiar();
             }
             }catch(Exception err){
@@ -297,7 +299,7 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
                 //vista.cbVehiculoC.setSelectedIndex(cl.getId_vehiculo());
                 //vista.cbVehiculoC.setSelectedItem("fds");
                 vista.tfUsuarioC.setText(cl.getUsuario());
-                vista.tfContraC.setText(cl.getContrasena());
+                vista.tfContraC.setText(encoder.decrypt(cl.getContrasena()));
             } else {
                 JOptionPane.showMessageDialog(null, "Error al consultar");
                 //limpiar();

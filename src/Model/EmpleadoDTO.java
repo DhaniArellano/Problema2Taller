@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import Utils.Encoder;
+import Utils.Validador;
 
 /**
  *
@@ -135,7 +137,10 @@ public class EmpleadoDTO extends Conexion {
         //List<Cliente> datos = new ArrayList<>();
         try {
             Connection con = getConexion();
-            ps = con.prepareStatement("SELECT idPersona, nombre, apellido, cedula, telefono, email, usuario, contraseña, rol, cargo FROM persona WHERE idPersona=? AND rol=\"admin\" OR rol=\"standard\"");
+            ps = con.prepareStatement("SELECT idPersona, nombre, apellido, cedula, telefono, email, usuario, contraseña, rol, cargo\n"
+                    + "FROM Persona\n"
+                    + "WHERE idPersona = ? AND (rol = 'admin' OR rol = 'standard')\n"
+                    + "LIMIT 1;");
             ps.setInt(1, idE);
             rs = ps.executeQuery();
             /**

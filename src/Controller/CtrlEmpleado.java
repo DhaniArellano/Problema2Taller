@@ -24,6 +24,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import Utils.Encoder;
 
 /**
  *
@@ -35,6 +36,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
     private final GestionEmpleados vista;
     private DefaultTableModel model = new DefaultTableModel();
     private final Validador validador;
+    private final Encoder encoder;
 
     public CtrlEmpleado(Empleado modelo, EmpleadoDTO empleadoDTO, GestionEmpleados vista) {
         this.modelo = modelo;
@@ -49,6 +51,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
         this.vista.tbEmpleados.addMouseListener(this);
         this.vista.addWindowListener(this);
         this.validador = new Validador();
+        this.encoder = new Encoder();
     }
     public void iniciar() {
         vista.setTitle("Gestion Empleados");
@@ -85,7 +88,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
                 modelo.setCargo(vista.tfCargoE.getText());
                 //modelo.setId_vehiculo((vista.cbVehiculoC.getSelectedIndex() + 1));
                 modelo.setUsuario(vista.tfUsuarioE.getText());
-                modelo.setContrasena(vista.tfContraE.getText());
+                modelo.setContrasena(encoder.encrypt(vista.tfContraE.getText()));
                 modelo.setRol((String) vista.cbRolE.getSelectedItem());
                 //comboBox.getSelectedIndex()
                 //modelo.setPrecio(Double.parseDouble(vista.txtPrecio.getText()));
@@ -140,7 +143,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
                 modelo.setCargo(vista.tfCargoE.getText());
                 //modelo.setId_vehiculo((vista.cbVehiculoC.getSelectedIndex() + 1));
                 modelo.setUsuario(vista.tfUsuarioE.getText());
-                modelo.setContrasena(vista.tfContraE.getText());
+                modelo.setContrasena(encoder.encrypt(vista.tfContraE.getText()));
                 modelo.setRol((String) vista.cbRolE.getSelectedItem());
                 try {
                     modelo.setId(Integer.parseInt(vista.tfIdE.getText()));
@@ -213,6 +216,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
             }
         }
     }
+    @Override
     public void mouseClicked(MouseEvent e) {
         // Manejar eventos de clic en la tabla
         if (e.getSource() == vista.tbEmpleados) {
@@ -225,6 +229,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
                 var em = empleadoDTO.consultaEmpleado(Integer.parseInt(id));
                 //JOptionPane.showMessageDialog(null, "consulta realizada");
                 limpiar();
+                System.out.println("id empleado: "+em.getId());
                 vista.tfIdE.setText(Integer.toString(em.getId()));
                 vista.tfNombresE.setText(em.getNombre());
                 vista.tfApellidosE.setText(em.getApellido());
@@ -236,7 +241,7 @@ public class CtrlEmpleado extends MouseAdapter implements ActionListener, Window
                 //vista.cbRolE.setSelectedIndex(devolverIndice(em.getRol()));
                 vista.cbRolE.setSelectedItem(em.getRol());
                 vista.tfUsuarioE.setText(em.getUsuario());
-                vista.tfContraE.setText(em.getContrasena());
+                vista.tfContraE.setText(encoder.decrypt(em.getContrasena()));
             } else {
                 JOptionPane.showMessageDialog(null, "Error al consultar");
                 //limpiar();

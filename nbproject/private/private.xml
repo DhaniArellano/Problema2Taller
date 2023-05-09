@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/DHANI/Documents/NetBeansProjects/Fase2_Daniel_Arellano/src/View/Login.java</file>
+            <file>file:/C:/Users/DHANI/Documents/NetBeansProjects/Fase2_Daniel_Arellano/src/Model/EmpleadoDTO.java</file>
+            <file>file:/C:/Users/DHANI/Documents/NetBeansProjects/Fase2_Daniel_Arellano/src/Controller/CtrlGestionUnicaUsuario.java</file>
+            <file>file:/C:/Users/DHANI/Documents/NetBeansProjects/Fase2_Daniel_Arellano/src/Utils/Encoder.java</file>
+            <file>file:/C:/Users/DHANI/Documents/NetBeansProjects/Fase2_Daniel_Arellano/src/Controller/CtrlEmpleado.java</file>
+            <file>file:/C:/Users/DHANI/Documents/NetBeansProjects/Fase2_Daniel_Arellano/src/Controller/CtrlCliente.java</file>
+            <file>file:/C:/Users/DHANI/Documents/NetBeansProjects/Fase2_Daniel_Arellano/src/Controller/CtrlLogin.java</file>
+        </group>
     </open-files>
 </project-private>

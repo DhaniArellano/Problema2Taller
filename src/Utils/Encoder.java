@@ -24,7 +24,9 @@ import javax.crypto.spec.SecretKeySpec;
 public class Encoder {
     static Cipher cipher;
     String secretKey = "fraseUltraSecreta";
-    public String encrypt(String plainText) throws NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
+    public String encrypt(String plainText) {
+        String encryptedText = "";
+        try{
         cipher = Cipher.getInstance("AES");
         MessageDigest md5 = MessageDigest.getInstance("MD5");
         byte[] llavePassword = md5.digest(secretKey.getBytes("utf-8"));
@@ -34,21 +36,31 @@ public class Encoder {
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         byte[] encryptedByte = cipher.doFinal(plainTextByte);
         Base64.Encoder encoder = Base64.getEncoder();
-        String encryptedText = encoder.encodeToString(encryptedByte);
+        encryptedText = encoder.encodeToString(encryptedByte);   
+        }catch(Exception ex){
+            System.err.print(ex.toString());
+        }
         return encryptedText;
     }
-    public String decrypt(String encryptedText) throws NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
-        cipher = Cipher.getInstance("AES");
-        MessageDigest md5 = MessageDigest.getInstance("MD5");
-        byte[] llavePassword = md5.digest(secretKey.getBytes("utf-8"));
-        byte[] BytesKey = Arrays.copyOf(llavePassword, 24);
-        SecretKey secretKey = new SecretKeySpec(BytesKey, "AES");
-        Base64.Decoder decoder = Base64.getDecoder();
-        byte[] encryptedTextByte = decoder.decode(encryptedText);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-        byte[] decryptedByte = cipher.doFinal(encryptedTextByte);
-        String decryptedText = new String(decryptedByte);
+    public String decrypt(String encryptedText){
+        String decryptedText = "";
+        try{
+            cipher = Cipher.getInstance("AES");
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] llavePassword = md5.digest(secretKey.getBytes("utf-8"));
+            byte[] BytesKey = Arrays.copyOf(llavePassword, 24);
+            SecretKey secretKey = new SecretKeySpec(BytesKey, "AES");
+            Base64.Decoder decoder = Base64.getDecoder();
+            byte[] encryptedTextByte = decoder.decode(encryptedText);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            byte[] decryptedByte = cipher.doFinal(encryptedTextByte);
+            decryptedText = new String(decryptedByte);
+        }catch(Exception exc){
+            System.err.println(exc.toString());
+        }
         return decryptedText;
+        
     }
+    
     
 }
