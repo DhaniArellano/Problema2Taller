@@ -30,6 +30,8 @@ import java.util.Set;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+
+import Utils.Validador;
 /**
  *
  * @author DHANI
@@ -41,6 +43,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
     private final GestionVehiculos vista;
     private DefaultTableModel model = new DefaultTableModel();
     private ServicioDTO servicioDTO = new ServicioDTO();
+    private Validador validador;
 
     public CtrlVehiculo(Vehiculo modelo, VehiculoDTO vehiculoDTO, GestionVehiculos vista) {
         this.modelo = modelo;
@@ -55,6 +58,7 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
         this.vista.btnServicio.addActionListener(this);
         this.vista.tbVehiculos.addMouseListener(this);
         this.vista.addWindowListener(this);
+        this.validador = new Validador();
         
     }
     public void iniciar() {
@@ -112,28 +116,32 @@ public class CtrlVehiculo extends MouseAdapter implements ActionListener, Window
             vista.tfPlaca.requestFocus();
         }
         if (e.getSource() == vista.btnGuardarV) {
-            modelo.setPlaca(vista.tfPlaca.getText());
-            modelo.setTipo(vista.tfTipo.getText());
-            modelo.setEstado(vista.tfEstado.getText());
-            modelo.setMotivoIngreso(vista.tfMotivo.getText());
-            modelo.setFechaIngreso(convertirFecha(vista.tfIngreso.getText()));
-            modelo.setFechaEntrega(convertirFecha(vista.tfEntrega.getText()));
-            //comboBox.getSelectedIndex()
-            //modelo.setPrecio(Double.parseDouble(vista.txtPrecio.getText()));
-            //modelo.setCantidad(Integer.parseInt(vista.txtCantidad.getText()));
-            if(!modelo.getPlaca().equals("")){
-                if (vehiculoDTO.registrarVehiculo(modelo)) {
-                    JOptionPane.showMessageDialog(null, "Registro Guardado");
-                    limpiar();
+            if (!validador.verificarRegistroExistente("vehiculo", "placa", vista.tfPlaca.getText())) {
+                modelo.setPlaca(vista.tfPlaca.getText());
+                modelo.setTipo(vista.tfTipo.getText());
+                modelo.setEstado(vista.tfEstado.getText());
+                modelo.setMotivoIngreso(vista.tfMotivo.getText());
+                modelo.setFechaIngreso(convertirFecha(vista.tfIngreso.getText()));
+                modelo.setFechaEntrega(convertirFecha(vista.tfEntrega.getText()));
+                //comboBox.getSelectedIndex()
+                //modelo.setPrecio(Double.parseDouble(vista.txtPrecio.getText()));
+                //modelo.setCantidad(Integer.parseInt(vista.txtCantidad.getText()));
+                if (!modelo.getPlaca().equals("")) {
+                    if (vehiculoDTO.registrarVehiculo(modelo)) {
+                        JOptionPane.showMessageDialog(null, "Registro Guardado");
+                        limpiar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al Guardar");
+                        //limpiar();
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error al Guardar");
-                    //limpiar();
+                    JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
+                    vista.tfPlaca.requestFocus();
                 }
-            }else{
-                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
-                vista.tfPlaca.requestFocus();
+                actualizarElementos();
+            } else {
+                JOptionPane.showMessageDialog(null, "Placa ya registrada");
             }
-            actualizarElementos();
         }
         if (e.getSource() == vista.btnActualizarV) {
             modelo.setPlaca(vista.tfPlaca.getText());

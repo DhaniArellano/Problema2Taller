@@ -85,57 +85,62 @@ public class CtrlCliente extends MouseAdapter implements ActionListener, WindowL
             actualizarElementos();
         }
         if (e.getSource() == vista.btnGuardarC) {
-            String placa;
-            int id;
-            id = 0; 
-            placa = vista.cbVehiculoC.getSelectedItem().toString();
-            if (placa != null || !placa.equals("")) {
-                id = clienteDTO.verificarAuto(placa);
-            }
-            if (validarCampos() && !verificarVehiculoAsociado(id)) {
-                modelo.setNombre(vista.tfNombresC.getText());
-                modelo.setApellido(vista.tfApellidosC.getText());
-                modelo.setDireccion(vista.tfDireccionC.getText());
-                modelo.setCedula(vista.tfCedulaC.getText());
-                modelo.setTelefono(vista.tfTelefonoC.getText());
-                modelo.setUsuario(vista.tfUsuarioC.getText());
-                modelo.setContrasena(encoder.encrypt(vista.tfContraC.getText()));
-                modelo.setEmail(vista.tfEmailC.getText());
-                //System.out.println("item: "+vista.cbVehiculoC.getSelectedItem().toString());
-                //System.out.println("index: "+vista.cbVehiculoC.getSelectedIndex());
-                modelo.setId_vehiculo(id);
-                if (clienteDTO.registrarCliente(modelo)) {
-                    JOptionPane.showMessageDialog(null, "Registro Guardado");
-                    limpiar();
+            if (!validador.verificarRegistroExistente("persona", "cedula", vista.tfCedulaC.getText())) {
+                String placa;
+                int id;
+                id = 0;
+                placa = vista.cbVehiculoC.getSelectedItem().toString();
+                if (placa != null || !placa.equals("")) {
+                    id = clienteDTO.verificarAuto(placa);
+                }
+                if (validarCampos() && !verificarVehiculoAsociado(id)) {
+                    modelo.setNombre(vista.tfNombresC.getText());
+                    modelo.setApellido(vista.tfApellidosC.getText());
+                    modelo.setDireccion(vista.tfDireccionC.getText());
+                    modelo.setCedula(vista.tfCedulaC.getText());
+                    modelo.setTelefono(vista.tfTelefonoC.getText());
+                    modelo.setUsuario(vista.tfUsuarioC.getText());
+                    modelo.setContrasena(encoder.encrypt(vista.tfContraC.getText()));
+                    modelo.setEmail(vista.tfEmailC.getText());
+                    //System.out.println("item: "+vista.cbVehiculoC.getSelectedItem().toString());
+                    //System.out.println("index: "+vista.cbVehiculoC.getSelectedIndex());
+                    modelo.setId_vehiculo(id);
+                    if (clienteDTO.registrarCliente(modelo)) {
+                        JOptionPane.showMessageDialog(null, "Registro Guardado");
+                        limpiar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al Guardar");
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error al Guardar");
+                    JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
+                    if (vista.tfNombresC.getText().isEmpty()) {
+                        vista.tfNombresC.requestFocus();
+                    } else if (vista.tfApellidosC.getText().isEmpty()) {
+                        vista.tfApellidosC.requestFocus();
+                    } else if (vista.tfDireccionC.getText().isEmpty()) {
+                        vista.tfDireccionC.requestFocus();
+                    } else if (vista.tfCedulaC.getText().isEmpty()) {
+                        vista.tfCedulaC.requestFocus();
+                    } else if (!validador.validarTelefono(vista.tfTelefonoC.getText())) {
+                        JOptionPane.showMessageDialog(null, "Telefono en formato incorrecto (10 Números)");
+                        vista.tfTelefonoC.requestFocus();
+                    } else if (!Validador.validarEmail(vista.tfEmailC.getText())) {
+                        JOptionPane.showMessageDialog(null, "Email en formato incorrecto");
+                        vista.tfEmailC.requestFocus();
+                    } else if (vista.cbVehiculoC.getSelectedItem().toString().equals("-1") || vista.cbVehiculoC.getSelectedItem().toString().equals("") || vista.cbVehiculoC.getSelectedItem().toString() == null) {
+                        JOptionPane.showMessageDialog(null, "Seleccione un vehículo");
+                        vista.cbVehiculoC.requestFocus();
+                    } else if (vista.tfUsuarioC.getText().isEmpty()) {
+                        vista.tfUsuarioC.requestFocus();
+                    } else if (vista.tfContraC.getText().isEmpty()) {
+                        vista.tfContraC.requestFocus();
+                    }
                 }
-            }else{
-                JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos requeridos");
-                if (vista.tfNombresC.getText().isEmpty()) {
-                    vista.tfNombresC.requestFocus();
-                } else if (vista.tfApellidosC.getText().isEmpty()) {
-                    vista.tfApellidosC.requestFocus();
-                } else if (vista.tfDireccionC.getText().isEmpty()) {
-                    vista.tfDireccionC.requestFocus();
-                } else if (vista.tfCedulaC.getText().isEmpty()) {
-                    vista.tfCedulaC.requestFocus();
-                } else if (!validador.validarTelefono(vista.tfTelefonoC.getText())) {
-                    JOptionPane.showMessageDialog(null, "Telefono en formato incorrecto (10 Números)");
-                    vista.tfTelefonoC.requestFocus();
-                } else if (!Validador.validarEmail(vista.tfEmailC.getText())) {
-                    JOptionPane.showMessageDialog(null, "Email en formato incorrecto");
-                    vista.tfEmailC.requestFocus();
-                } else if (vista.cbVehiculoC.getSelectedItem().toString().equals("-1")||vista.cbVehiculoC.getSelectedItem().toString().equals("")||vista.cbVehiculoC.getSelectedItem().toString() == null){
-                    JOptionPane.showMessageDialog(null, "Seleccione un vehículo");
-                    vista.cbVehiculoC.requestFocus();
-                } else if (vista.tfUsuarioC.getText().isEmpty()) {
-                    vista.tfUsuarioC.requestFocus();
-                } else if (vista.tfContraC.getText().isEmpty()) {
-                    vista.tfContraC.requestFocus();
-                }
+                actualizarElementos();
+            } else {
+                JOptionPane.showMessageDialog(null, "la cedula ya está registrada");
             }
-            actualizarElementos();
+            
         }
         if (e.getSource() == vista.btnActualizarC) {
             String placa="";
